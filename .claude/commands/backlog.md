@@ -4,12 +4,16 @@ description: "Create backlog item for next test in plan.md"
 
 # Backlog Generator Command
 
-`/backlog` 명령어를 입력하면 plan.md에서 다음 진행할 테스트를 찾아 애자일 백로그 아이템을 생성합니다.
+`/backlog` 명령어를 입력하면 애자일 백로그 아이템을 생성합니다.
 
 ## Instructions
 
-1. **plan.md 읽기**: plan.md를 읽어서 다음 체크되지 않은 테스트를 찾음
+1. **테스트 선택 확인**:
+   - 사용자가 plan.md에서 텍스트 블록을 선택했으면 → 선택한 테스트에 대한 백로그 생성
+   - 선택하지 않았으면 → plan.md를 읽어서 다음 체크되지 않은 테스트를 찾아 백로그 생성
+
 2. **백로그 생성**: 아래 형식에 맞춰 백로그를 콘솔에 출력
+
 3. **Markdown 형식**: 사용자가 복사해서 애자일 보드에 붙여넣을 수 있도록 마크다운 형식으로 출력
 
 ## 백로그 카드 구성 요소
