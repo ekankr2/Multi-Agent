@@ -1,8 +1,12 @@
 fastapi
 uvicorn
+python-dotenv
 langchain
 openai
 pdfplumber
 python-docx
 beautifulsoup4
 aiohttp
+sqlalchemy
+pymysql
+redis
