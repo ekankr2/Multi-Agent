@@ -101,3 +101,38 @@ def test_user_repository_find_by_id(db_session):
     assert found_user.email == "test@example.com"
     assert found_user.name == "Test User"
     assert found_user.profile_picture == "https://example.com/photo.jpg"
+
+
+def test_user_repository_update(db_session):
+    """User 정보 업데이트"""
+    from app.user.infrastructure.repository.user_repository_impl import UserRepositoryImpl
+    import time
+
+    # Given: User를 데이터베이스에 저장
+    repository = UserRepositoryImpl(db_session)
+    user = User(
+        google_id="google_123456",
+        email="test@example.com",
+        name="Test User",
+        profile_picture="https://example.com/photo.jpg"
+    )
+    saved_user = repository.save(user)
+    original_updated_at = saved_user.updated_at
+
+    # Wait a bit to ensure timestamp difference
+    time.sleep(0.01)
+
+    # When: User 정보 업데이트
+    saved_user.update_name("Updated User")
+    updated_user = repository.update(saved_user)
+
+    # Then: 업데이트된 정보가 반영됨
+    assert updated_user.id == saved_user.id
+    assert updated_user.name == "Updated User"
+    assert updated_user.updated_at > original_updated_at
+
+    # 데이터베이스에서 다시 조회하여 확인
+    found_user = repository.find_by_id(saved_user.id)
+    assert found_user is not None
+    assert found_user.name == "Updated User"
+    assert found_user.updated_at > original_updated_at

@@ -17,8 +17,7 @@
 - [x] test_user_repository_save: UserRepository가 User를 데이터베이스에 저장 AIS-6
 - [x] test_user_repository_find_by_google_id: google_id로 User 조회 AIS-7
 - [x] test_user_repository_find_by_id: id로 User 조회 AIS-8
-- [ ] test_user_repository_find_by_google_id_not_found: 존재하지 않는 google_id 조회 시 None 반환 AIS-9
-- [ ] test_user_repository_update: User 정보 업데이트 AIS-10
+- [x] test_user_repository_update: User 정보 업데이트 AIS-9
 
 #### 1.3 User Use Cases
 - [ ] test_register_or_login_user_new_user: 새로운 Google 사용자 자동 회원가입
