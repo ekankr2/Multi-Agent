@@ -49,3 +49,29 @@ def test_user_repository_save(db_session):
     assert saved_user.created_at is not None
     assert saved_user.updated_at is not None
     assert saved_user.last_login_at is not None
+
+
+def test_user_repository_find_by_google_id(db_session):
+    """google_id로 User 조회"""
+    from app.user.infrastructure.repository.user_repository_impl import UserRepositoryImpl
+
+    # Given: User를 데이터베이스에 저장
+    repository = UserRepositoryImpl(db_session)
+    user = User(
+        google_id="google_123456",
+        email="test@example.com",
+        name="Test User",
+        profile_picture="https://example.com/photo.jpg"
+    )
+    saved_user = repository.save(user)
+
+    # When: google_id로 조회
+    found_user = repository.find_by_google_id("google_123456")
+
+    # Then: 저장된 사용자가 조회됨
+    assert found_user is not None
+    assert found_user.id == saved_user.id
+    assert found_user.google_id == "google_123456"
+    assert found_user.email == "test@example.com"
+    assert found_user.name == "Test User"
+    assert found_user.profile_picture == "https://example.com/photo.jpg"
