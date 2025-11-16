@@ -16,3 +16,6 @@ class User:
     def update_name(self, name: str):
         self.name = name
         self.updated_at = datetime.now()
+
+    def update_last_login(self):
+        self.last_login_at = datetime.now()

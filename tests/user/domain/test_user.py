@@ -67,3 +67,24 @@ def test_user_update_name():
 
     assert user.name == "Updated User"
     assert user.updated_at > original_updated_at
+
+
+def test_user_update_last_login():
+    """로그인 시 last_login_at 갱신"""
+    from app.user.domain.user import User
+
+    user = User(
+        google_id="123456789",
+        email="test@example.com",
+        name="Test User",
+        profile_picture="https://example.com/photo.jpg"
+    )
+
+    original_last_login_at = user.last_login_at
+
+    # Sleep to ensure time difference
+    time.sleep(0.01)
+
+    user.update_last_login()
+
+    assert user.last_login_at > original_last_login_at
