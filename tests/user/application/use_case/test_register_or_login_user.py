@@ -59,3 +59,49 @@ def test_register_or_login_user_new_user(db_session):
     saved_user = repository.find_by_google_id(google_id)
     assert saved_user is not None
     assert saved_user.id == user.id
+
+
+def test_register_or_login_user_existing_user(db_session):
+    """기존 사용자 로그인 시 last_login_at 갱신"""
+    from app.user.application.use_case.register_or_login_user import RegisterOrLoginUser
+    import time
+
+    # Given: 이미 등록된 사용자
+    google_id = "google_existing_user_456"
+    email = "existing@example.com"
+    name = "Existing User"
+    profile_picture = "https://example.com/existing_photo.jpg"
+
+    repository = UserRepositoryImpl(db_session)
+    use_case = RegisterOrLoginUser(repository)
+
+    # 첫 번째 로그인 (회원가입)
+    first_login_user = use_case.execute(
+        google_id=google_id,
+        email=email,
+        name=name,
+        profile_picture=profile_picture
+    )
+    first_login_at = first_login_user.last_login_at
+
+    # Wait a bit to ensure timestamp difference
+    time.sleep(0.01)
+
+    # When: 동일한 사용자가 다시 로그인
+    second_login_user = use_case.execute(
+        google_id=google_id,
+        email=email,
+        name=name,
+        profile_picture=profile_picture
+    )
+
+    # Then: 기존 사용자가 반환되고 last_login_at이 갱신됨
+    assert second_login_user is not None
+    assert second_login_user.id == first_login_user.id
+    assert second_login_user.google_id == google_id
+    assert second_login_user.last_login_at > first_login_at
+
+    # 데이터베이스에서 확인
+    saved_user = repository.find_by_google_id(google_id)
+    assert saved_user is not None
+    assert saved_user.last_login_at > first_login_at

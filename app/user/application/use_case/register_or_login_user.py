@@ -16,8 +16,9 @@ class RegisterOrLoginUser:
         existing_user = self.user_repository.find_by_google_id(google_id)
 
         if existing_user:
-            # 기존 사용자: last_login_at 갱신 (다음 테스트에서 구현)
-            return existing_user
+            # 기존 사용자: last_login_at 갱신
+            existing_user.update_last_login()
+            return self.user_repository.update(existing_user)
         else:
             # 새로운 사용자: 회원가입
             new_user = User(
