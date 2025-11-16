@@ -25,3 +25,11 @@ Base = declarative_base()
 
 def get_db_session():
     return SessionLocal()
+
+def get_db():
+    """FastAPI dependency for database session"""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
