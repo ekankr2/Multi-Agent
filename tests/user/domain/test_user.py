@@ -1,5 +1,6 @@
 import pytest
 from datetime import datetime
+import time
 
 
 def test_user_creation_with_google_info():
@@ -44,3 +45,25 @@ def test_user_has_timestamps():
     assert before_creation <= user.created_at <= after_creation
     assert before_creation <= user.updated_at <= after_creation
     assert before_creation <= user.last_login_at <= after_creation
+
+
+def test_user_update_name():
+    """User 이름 업데이트 시 updated_at 갱신"""
+    from app.user.domain.user import User
+
+    user = User(
+        google_id="123456789",
+        email="test@example.com",
+        name="Test User",
+        profile_picture="https://example.com/photo.jpg"
+    )
+
+    original_updated_at = user.updated_at
+
+    # Sleep to ensure time difference
+    time.sleep(0.01)
+
+    user.update_name("Updated User")
+
+    assert user.name == "Updated User"
+    assert user.updated_at > original_updated_at

@@ -12,3 +12,7 @@ class User:
         self.created_at = now
         self.updated_at = now
         self.last_login_at = now
+
+    def update_name(self, name: str):
+        self.name = name
+        self.updated_at = datetime.now()
