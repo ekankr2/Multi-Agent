@@ -3,8 +3,8 @@ from fastapi import APIRouter, Response, Request, Cookie
 from fastapi.responses import RedirectResponse
 
 from config.redis_config import get_redis
-from social_oauth.application.usecase.google_oauth2_usecase import GoogleOAuth2UseCase
-from social_oauth.infrastructure.service.google_oauth2_service import GoogleOAuth2Service
+from app.social_oauth.application.usecase.google_oauth2_usecase import GoogleOAuth2UseCase
+from app.social_oauth.infrastructure.service.google_oauth2_service import GoogleOAuth2Service
 
 authentication_router = APIRouter()
 service = GoogleOAuth2Service()

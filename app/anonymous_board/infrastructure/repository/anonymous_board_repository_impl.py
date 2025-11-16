@@ -1,9 +1,9 @@
 from typing import List, Optional
 from sqlalchemy.orm import Session
 
-from anonymous_board.application.port.anonymous_board_repository_port import AnonymousBoardRepositoryPort
-from anonymous_board.domain.anonymous_board import AnonymousBoard
-from anonymous_board.infrastructure.orm.anonymous_board_orm import AnonymousBoardORM
+from app.anonymous_board.application.port.anonymous_board_repository_port import AnonymousBoardRepositoryPort
+from app.anonymous_board.domain.anonymous_board import AnonymousBoard
+from app.anonymous_board.infrastructure.orm.anonymous_board_orm import AnonymousBoardORM
 from config.database.session import get_db_session
 
 

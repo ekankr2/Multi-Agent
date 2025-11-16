@@ -4,7 +4,7 @@ from datetime import datetime
 
 def test_user_creation_with_google_info():
     """User 엔티티 생성 시 Google 정보(google_id, email, name, profile_picture) 저장"""
-    from user.domain.user import User
+    from app.user.domain.user import User
 
     google_id = "123456789"
     email = "test@example.com"

@@ -2,8 +2,8 @@ import os
 import requests
 from urllib.parse import quote
 
-from social_oauth.adapter.input.web.request.get_access_token_request import GetAccessTokenRequest
-from social_oauth.adapter.input.web.response.access_token import AccessToken
+from app.social_oauth.adapter.input.web.request.get_access_token_request import GetAccessTokenRequest
+from app.social_oauth.adapter.input.web.response.access_token import AccessToken
 
 GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth"
 GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"

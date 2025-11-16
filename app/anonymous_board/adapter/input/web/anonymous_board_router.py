@@ -2,10 +2,10 @@ from typing import List
 
 from fastapi import APIRouter, HTTPException
 
-from anonymous_board.adapter.input.web.request.create_anonymous_board_request import CreateAnonymousBoardRequest
-from anonymous_board.adapter.input.web.response.anonymous_board_response import AnonymousBoardResponse
-from anonymous_board.application.usecase.anonymous_board_usecase import AnonymousBoardUseCase
-from anonymous_board.infrastructure.repository.anonymous_board_repository_impl import AnonymousBoardRepositoryImpl
+from app.anonymous_board.adapter.input.web.request.create_anonymous_board_request import CreateAnonymousBoardRequest
+from app.anonymous_board.adapter.input.web.response.anonymous_board_response import AnonymousBoardResponse
+from app.anonymous_board.application.usecase.anonymous_board_usecase import AnonymousBoardUseCase
+from app.anonymous_board.infrastructure.repository.anonymous_board_repository_impl import AnonymousBoardRepositoryImpl
 
 anonymous_board_router = APIRouter()
 usecase = AnonymousBoardUseCase(AnonymousBoardRepositoryImpl())

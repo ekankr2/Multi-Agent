@@ -1,7 +1,7 @@
 from typing import List, Optional
 
-from anonymous_board.application.port.anonymous_board_repository_port import AnonymousBoardRepositoryPort
-from anonymous_board.domain.anonymous_board import AnonymousBoard
+from app.anonymous_board.application.port.anonymous_board_repository_port import AnonymousBoardRepositoryPort
+from app.anonymous_board.domain.anonymous_board import AnonymousBoard
 
 
 class AnonymousBoardUseCase:

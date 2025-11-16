@@ -1,4 +1,4 @@
-from social_oauth.infrastructure.service.google_oauth2_service import GoogleOAuth2Service, GetAccessTokenRequest, \
+from app.social_oauth.infrastructure.service.google_oauth2_service import GoogleOAuth2Service, GetAccessTokenRequest, \
     AccessToken
 
 

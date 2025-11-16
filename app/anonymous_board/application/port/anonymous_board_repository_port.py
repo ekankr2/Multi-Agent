@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
-from anonymous_board.domain.anonymous_board import AnonymousBoard
+from app.anonymous_board.domain.anonymous_board import AnonymousBoard
 
 
 class AnonymousBoardRepositoryPort(ABC):
