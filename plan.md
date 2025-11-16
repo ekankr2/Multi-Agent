@@ -52,59 +52,59 @@
 > - 각 백로그 안에 Domain + Use Case + Repository + Adapter가 모두 포함
 
 #### 2.1 게시글 생성 기능
-**[백로그 1개] Board 생성 기능 전체 구현 (Domain → Use Case → Repository → API)**
+**[백로그 AIS-21] Board 생성 기능 전체 구현 (Domain → Use Case → Repository → API)**
 
-- [ ] test_board_creation_with_user_id: Board 엔티티 생성 시 user_id 포함 AIS-21
-- [ ] test_board_has_title_and_content: Board는 title(최대 255자), content(최대 2000자) 포함 AIS-22
-- [ ] test_board_has_timestamps: Board 생성 시 created_at, updated_at 자동 설정 AIS-23
-- [ ] test_board_title_max_length_validation: title이 255자 초과 시 예외 발생 AIS-25
-- [ ] test_board_content_max_length_validation: content가 2000자 초과 시 예외 발생 AIS-26
-- [ ] test_board_repository_save: BoardRepository가 Board를 데이터베이스에 저장 AIS-27
-- [ ] test_create_board_authenticated: 인증된 사용자가 게시글 작성 AIS-33
-- [ ] test_create_board_unauthenticated: 인증되지 않은 사용자는 게시글 작성 불가 AIS-34
-- [ ] test_create_board_endpoint: POST /board - 게시글 작성 성공 AIS-45
-- [ ] test_create_board_endpoint_unauthenticated: POST /board - 인증 안 된 요청 시 401 에러 AIS-46
-- [ ] test_create_board_endpoint_validation_error: POST /board - 유효성 검증 실패 시 422 에러 AIS-47
+- [ ] test_board_creation_with_user_id: Board 엔티티 생성 시 user_id 포함
+- [ ] test_board_has_title_and_content: Board는 title(최대 255자), content(최대 2000자) 포함
+- [ ] test_board_has_timestamps: Board 생성 시 created_at, updated_at 자동 설정
+- [ ] test_board_title_max_length_validation: title이 255자 초과 시 예외 발생
+- [ ] test_board_content_max_length_validation: content가 2000자 초과 시 예외 발생
+- [ ] test_board_repository_save: BoardRepository가 Board를 데이터베이스에 저장
+- [ ] test_create_board_authenticated: 인증된 사용자가 게시글 작성
+- [ ] test_create_board_unauthenticated: 인증되지 않은 사용자는 게시글 작성 불가
+- [ ] test_create_board_endpoint: POST /board - 게시글 작성 성공
+- [ ] test_create_board_endpoint_unauthenticated: POST /board - 인증 안 된 요청 시 401 에러
+- [ ] test_create_board_endpoint_validation_error: POST /board - 유효성 검증 실패 시 422 에러
 
 #### 2.2 게시글 목록 조회 기능
-**[백로그 1개] Board 목록 조회 기능 전체 구현**
+**[백로그 AIS-22] Board 목록 조회 기능 전체 구현**
 
-- [ ] test_board_repository_find_all: 전체 Board 목록 조회 (최신순 정렬) AIS-30
-- [ ] test_get_board_list_authenticated: 인증된 사용자가 게시글 목록 조회 AIS-35
-- [ ] test_get_board_list_unauthenticated: 인증되지 않은 사용자는 목록 조회 불가 AIS-36
-- [ ] test_board_list_response_includes_author_info: Board 목록 응답 각 항목에 작성자 정보 포함 AIS-44
-- [ ] test_get_board_list_endpoint: GET /board - 게시글 목록 조회 성공 AIS-48
-- [ ] test_get_board_list_endpoint_unauthenticated: GET /board - 인증 안 된 요청 시 401 에러 AIS-49
+- [ ] test_board_repository_find_all: 전체 Board 목록 조회 (최신순 정렬)
+- [ ] test_get_board_list_authenticated: 인증된 사용자가 게시글 목록 조회
+- [ ] test_get_board_list_unauthenticated: 인증되지 않은 사용자는 목록 조회 불가
+- [ ] test_board_list_response_includes_author_info: Board 목록 응답 각 항목에 작성자 정보 포함
+- [ ] test_get_board_list_endpoint: GET /board - 게시글 목록 조회 성공
+- [ ] test_get_board_list_endpoint_unauthenticated: GET /board - 인증 안 된 요청 시 401 에러
 
 #### 2.3 게시글 상세 조회 기능
-**[백로그 1개] Board 상세 조회 기능 전체 구현**
+**[백로그 AIS-23] Board 상세 조회 기능 전체 구현**
 
-- [ ] test_board_repository_find_by_id: id로 Board 조회 AIS-28
-- [ ] test_board_repository_find_by_id_not_found: 존재하지 않는 Board 조회 시 None 반환 AIS-29
-- [ ] test_get_board_detail_authenticated: 인증된 사용자가 게시글 상세 조회 AIS-37
-- [ ] test_get_board_detail_not_found: 존재하지 않는 게시글 조회 시 예외 발생 AIS-38
-- [ ] test_board_response_includes_author_info: Board 응답에 작성자 정보(name, profile_picture) 포함 AIS-43
-- [ ] test_get_board_detail_endpoint: GET /board/{board_id} - 게시글 상세 조회 성공 AIS-50
-- [ ] test_get_board_detail_endpoint_not_found: GET /board/{board_id} - 없는 게시글 조회 시 404 에러 AIS-51
+- [ ] test_board_repository_find_by_id: id로 Board 조회
+- [ ] test_board_repository_find_by_id_not_found: 존재하지 않는 Board 조회 시 None 반환
+- [ ] test_get_board_detail_authenticated: 인증된 사용자가 게시글 상세 조회
+- [ ] test_get_board_detail_not_found: 존재하지 않는 게시글 조회 시 예외 발생
+- [ ] test_board_response_includes_author_info: Board 응답에 작성자 정보(name, profile_picture) 포함
+- [ ] test_get_board_detail_endpoint: GET /board/{board_id} - 게시글 상세 조회 성공
+- [ ] test_get_board_detail_endpoint_not_found: GET /board/{board_id} - 없는 게시글 조회 시 404 에러
 
 #### 2.4 게시글 수정 기능
-**[백로그 1개] Board 수정 기능 전체 구현 (권한 검증 포함)**
+**[백로그 AIS-24] Board 수정 기능 전체 구현 (권한 검증 포함)**
 
-- [ ] test_board_update_title_and_content: Board 수정 시 updated_at 갱신 AIS-24
-- [ ] test_board_repository_update: Board 업데이트 AIS-31
-- [ ] test_update_board_by_author: 작성자가 본인 게시글 수정 성공 AIS-39
-- [ ] test_update_board_by_non_author: 다른 사용자가 수정 시도 시 403 에러 AIS-40
-- [ ] test_update_board_endpoint: PATCH /board/{board_id} - 게시글 수정 성공 AIS-52
-- [ ] test_update_board_endpoint_forbidden: PATCH /board/{board_id} - 작성자 아닌 경우 403 에러 AIS-53
+- [ ] test_board_update_title_and_content: Board 수정 시 updated_at 갱신
+- [ ] test_board_repository_update: Board 업데이트
+- [ ] test_update_board_by_author: 작성자가 본인 게시글 수정 성공
+- [ ] test_update_board_by_non_author: 다른 사용자가 수정 시도 시 403 에러
+- [ ] test_update_board_endpoint: PATCH /board/{board_id} - 게시글 수정 성공
+- [ ] test_update_board_endpoint_forbidden: PATCH /board/{board_id} - 작성자 아닌 경우 403 에러
 
 #### 2.5 게시글 삭제 기능
-**[백로그 1개] Board 삭제 기능 전체 구현 (권한 검증 포함)**
+**[백로그 AIS-25] Board 삭제 기능 전체 구현 (권한 검증 포함)**
 
-- [ ] test_board_repository_delete: Board 삭제 AIS-32
-- [ ] test_delete_board_by_author: 작성자가 본인 게시글 삭제 성공 AIS-41
-- [ ] test_delete_board_by_non_author: 다른 사용자가 삭제 시도 시 403 에러 AIS-42
-- [ ] test_delete_board_endpoint: DELETE /board/{board_id} - 게시글 삭제 성공 AIS-54
-- [ ] test_delete_board_endpoint_forbidden: DELETE /board/{board_id} - 작성자 아닌 경우 403 에러 AIS-55
+- [ ] test_board_repository_delete: Board 삭제
+- [ ] test_delete_board_by_author: 작성자가 본인 게시글 삭제 성공
+- [ ] test_delete_board_by_non_author: 다른 사용자가 삭제 시도 시 403 에러
+- [ ] test_delete_board_endpoint: DELETE /board/{board_id} - 게시글 삭제 성공
+- [ ] test_delete_board_endpoint_forbidden: DELETE /board/{board_id} - 작성자 아닌 경우 403 에러
 
 ---
 
@@ -113,20 +113,18 @@
 > **백로그 정책**: Phase 3도 기능 단위로 백로그 통합
 
 #### 3.1 Session Validation Middleware
-**[백로그 1개로 통합] Session Validation Middleware 구현 (AIS-56~59)**
+**[백로그 AIS-26] Session Validation Middleware 구현**
 
-**세션 검증 미들웨어**
-- [ ] test_session_middleware_valid_session: 유효한 세션으로 요청 시 user_id 컨텍스트에 주입 AIS-56
-- [ ] test_session_middleware_invalid_session: 유효하지 않은 세션 토큰 시 401 에러 AIS-57
-- [ ] test_session_middleware_missing_session: 세션 쿠키 없이 요청 시 401 에러 AIS-58
-- [ ] test_session_middleware_expired_session: 만료된 세션 시 401 에러 AIS-59
+- [ ] test_session_middleware_valid_session: 유효한 세션으로 요청 시 user_id 컨텍스트에 주입
+- [ ] test_session_middleware_invalid_session: 유효하지 않은 세션 토큰 시 401 에러
+- [ ] test_session_middleware_missing_session: 세션 쿠키 없이 요청 시 401 에러
+- [ ] test_session_middleware_expired_session: 만료된 세션 시 401 에러
 
 #### 3.2 Get Current User Dependency
-**[백로그 1개로 통합] Get Current User Dependency 구현 (AIS-60~61)**
+**[백로그 AIS-27] Get Current User Dependency 구현**
 
-**현재 사용자 조회 의존성**
-- [ ] test_get_current_user_from_session: 세션에서 현재 사용자 조회 AIS-60
-- [ ] test_get_current_user_session_user_not_found: 세션은 있지만 User가 DB에 없는 경우 예외 발생 AIS-61
+- [ ] test_get_current_user_from_session: 세션에서 현재 사용자 조회
+- [ ] test_get_current_user_session_user_not_found: 세션은 있지만 User가 DB에 없는 경우 예외 발생
 
 ---
 
@@ -135,25 +133,22 @@
 > **백로그 정책**: Phase 4도 기능 단위로 백로그 통합
 
 #### 4.1 User Domain Integration
-**[백로그 1개로 통합] User Domain Integration Tests (AIS-62~63)**
+**[백로그 AIS-28] User Domain Integration Tests**
 
-**User Domain 통합 테스트**
-- [ ] test_user_full_workflow: 사용자 등록 → 조회 → 프로필 수정 전체 플로우 AIS-62
-- [ ] test_google_oauth_to_user_creation_flow: Google OAuth 콜백 → User 생성 → 세션 생성 플로우 AIS-63
+- [ ] test_user_full_workflow: 사용자 등록 → 조회 → 프로필 수정 전체 플로우
+- [ ] test_google_oauth_to_user_creation_flow: Google OAuth 콜백 → User 생성 → 세션 생성 플로우
 
 #### 4.2 Board Domain Integration
-**[백로그 1개로 통합] Board Domain Integration Tests (AIS-64~65)**
+**[백로그 AIS-29] Board Domain Integration Tests**
 
-**Board Domain 통합 테스트**
-- [ ] test_board_full_workflow_single_user: 게시글 작성 → 조회 → 수정 → 삭제 전체 플로우 AIS-64
-- [ ] test_board_authorization_workflow: 사용자 A가 작성, 사용자 B가 수정/삭제 시도 시 403 에러 AIS-65
+- [ ] test_board_full_workflow_single_user: 게시글 작성 → 조회 → 수정 → 삭제 전체 플로우
+- [ ] test_board_authorization_workflow: 사용자 A가 작성, 사용자 B가 수정/삭제 시도 시 403 에러
 
 #### 4.3 End-to-End Scenarios
-**[백로그 1개로 통합] E2E Scenarios (AIS-66~67)**
+**[백로그 AIS-30] E2E Scenarios**
 
-**E2E 시나리오**
-- [ ] test_e2e_google_login_and_create_board: Google 로그인 → 게시글 작성 → 목록 조회 AIS-66
-- [ ] test_e2e_multiple_users_board_interaction: 여러 사용자가 게시글 작성 및 각자 게시글 수정/삭제 AIS-67
+- [ ] test_e2e_google_login_and_create_board: Google 로그인 → 게시글 작성 → 목록 조회
+- [ ] test_e2e_multiple_users_board_interaction: 여러 사용자가 게시글 작성 및 각자 게시글 수정/삭제
 
 ---
 
