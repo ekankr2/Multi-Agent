@@ -8,7 +8,7 @@
 ### Phase 1: User Domain (사용자 도메인)
 
 #### 1.1 User Domain Entity
-- [ ] test_user_creation_with_google_info: User 엔티티 생성 시 Google 정보(google_id, email, name, profile_picture) 저장
+- [x] test_user_creation_with_google_info: User 엔티티 생성 시 Google 정보(google_id, email, name, profile_picture) 저장
 - [ ] test_user_has_timestamps: User 엔티티 생성 시 created_at, updated_at, last_login_at 자동 설정
 - [ ] test_user_update_name: User 이름 업데이트 시 updated_at 갱신
 - [ ] test_user_update_last_login: 로그인 시 last_login_at 갱신
