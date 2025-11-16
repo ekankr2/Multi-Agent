@@ -29,7 +29,7 @@
 #### 1.4 User Web Adapter (REST API)
 
 **GET /user/me API 구현**
-- [ ] test_get_me_endpoint_authenticated: GET /user/me - 인증된 사용자 정보 조회 성공 AIS-15
+- [x] test_get_me_endpoint_authenticated: GET /user/me - 인증된 사용자 정보 조회 성공 AIS-15
 - [ ] test_get_me_endpoint_unauthenticated: GET /user/me - 인증되지 않은 요청 시 401 에러 AIS-16
 
 **PATCH /user/me API 구현**
