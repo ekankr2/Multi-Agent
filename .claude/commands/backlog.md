@@ -6,6 +6,18 @@ description: "Create backlog item for next test in plan.md"
 
 `/backlog` 명령어를 입력하면 애자일 백로그 아이템을 생성합니다.
 
+---
+
+⚠️ **중요: 출력 형식 규칙 (필수 준수)**
+
+반드시 아래 마크다운 형식을 정확히 따를 것:
+- **Purpose**: `**현재 상황**:`, `**이 작업을 통해**:`, `**기대 효과**:` → 볼드체 필수
+- **Success Criteria**: `- [ ]` 체크박스 형식 필수
+- **To-Do**: `- [ ]` 체크박스 형식 필수
+- **파일명/커밋**: 백틱(`) 으로 감싸기 필수
+
+---
+
 ## Instructions
 
 1. **테스트 선택 확인**:
@@ -82,9 +94,6 @@ User Domain
 - [ ] Google 로그인한 사용자의 정보(Google ID, 이메일, 이름, 프로필 사진)가 시스템에 자동으로 저장됨
 - [ ] 동일한 Google 계정으로 재로그인하면 기존 저장된 정보를 조회할 수 있음
 - [ ] 저장된 정보가 Google에서 제공한 원본 정보와 일치함
-- [ ] 테스트 코드 작성 및 통과 (RED → GREEN)
-- [ ] 필요 시 코드 리팩터링 완료 (REFACTOR)
-- [ ] 커밋 완료: `feat: [작성자] User 엔티티로 Google 사용자 정보 저장 [AIS-X]`
 
 ## To-Do (작업 목록)
 - [ ] `test_user_creation_with_google_info` 테스트 작성 (`tests/user/domain/test_user.py`)
@@ -94,10 +103,12 @@ User Domain
 - [ ] 테스트 실행 및 통과 확인 (GREEN)
 - [ ] 코드 품질 검토 및 리팩터링 (필요 시)
 - [ ] 전체 테스트 스위트 실행
-- [ ] 커밋: `feat: [작성자] User 엔티티로 Google 사용자 정보 저장 [AIS-X]`
 ```
 
 ## 작성 가이드
+
+### Notion 에자일 보드를 사용 예정
+- 노션에 붙여넣기 쉬운 형식으로 만들것
 
 ### Title (제목) 작성 시
 - **비개발자도 이해 가능**: "User 엔티티 생성" 대신 "사용자 정보 자동 저장"

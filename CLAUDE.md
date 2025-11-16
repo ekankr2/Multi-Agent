@@ -73,3 +73,32 @@ When approaching a new feature:
 Follow this process precisely, always prioritizing clean, well-tested code over quick implementation.
 
 Always write one test at a time, make it run, then improve structure. Always run all the tests (except long-running tests) each time.
+
+# BACKLOG 생성 규칙
+
+/backlog 명령어 사용 시 **반드시** 아래 마크다운 형식을 준수할 것:
+
+## 필수 마크다운 문법
+- **Purpose 섹션**: "현재 상황:", "이 작업을 통해:", "기대 효과:" 는 **반드시 볼드체(`**텍스트**`)** 사용
+- **Success Criteria**: 모든 항목은 **반드시 `- [ ]` 체크박스 형식** 사용
+- **To-Do**: 모든 항목은 **반드시 `- [ ]` 체크박스 형식** 사용
+- **파일명**: 반드시 백틱으로 감쌈 (예: `` `tests/user/domain/test_user.py` ``)
+- **커밋 메시지**: 반드시 백틱으로 감쌈 (예: `` `feat: [작성자] 요약 [AIS-XX]` ``)
+
+## 출력 예시 (정확히 이 형식을 따를 것)
+```markdown
+## Purpose (목적)
+**현재 상황**: ... (볼드 필수)
+
+**이 작업을 통해**: ... (볼드 필수)
+
+**기대 효과**: ... (볼드 필수)
+
+## Success Criteria (완료 조건)
+- [ ] 기능 조건 1 (체크박스 필수)
+- [ ] 기능 조건 2 (체크박스 필수)
+
+## To-Do (작업 목록)
+- [ ] `test_xxx.py` 테스트 작성 (체크박스 + 백틱 필수)
+- [ ] 커밋: `feat: [작성자] 요약 [AIS-XX]` (백틱 필수)
+```
