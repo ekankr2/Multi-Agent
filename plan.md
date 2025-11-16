@@ -20,11 +20,11 @@
 - [x] test_user_repository_update: User 정보 업데이트 AIS-9
 
 #### 1.3 User Use Cases
-- [ ] test_register_or_login_user_new_user: 새로운 Google 사용자 자동 회원가입
-- [ ] test_register_or_login_user_existing_user: 기존 사용자 로그인 시 last_login_at 갱신
-- [ ] test_get_user_by_id: ID로 사용자 조회
-- [ ] test_get_user_by_id_not_found: 존재하지 않는 ID 조회 시 예외 발생
-- [ ] test_update_user_profile: 사용자 프로필 업데이트 (이름 변경)
+- [x] test_register_or_login_user_new_user: 새로운 Google 사용자 자동 회원가입 AIS-10
+- [x] test_register_or_login_user_existing_user: 기존 사용자 로그인 시 last_login_at 갱신 AIS-11
+- [ ] test_get_user_by_id: ID로 사용자 조회 AIS-12
+- [ ] test_get_user_by_id_not_found: 존재하지 않는 ID 조회 시 예외 발생 AIS-13
+- [ ] test_update_user_profile: 사용자 프로필 업데이트 (이름 변경) AIS-14
 
 #### 1.4 User Web Adapter (REST API)
 - [ ] test_get_me_endpoint_authenticated: GET /user/me - 인증된 사용자 정보 조회 성공
