@@ -22,7 +22,7 @@
 #### 1.3 User Use Cases
 - [x] test_register_or_login_user_new_user: 새로운 Google 사용자 자동 회원가입 AIS-10
 - [x] test_register_or_login_user_existing_user: 기존 사용자 로그인 시 last_login_at 갱신 AIS-11
-- [ ] test_get_user_by_id: ID로 사용자 조회 AIS-12
+- [x] test_get_user_by_id: ID로 사용자 조회 AIS-12
 - [ ] test_get_user_by_id_not_found: 존재하지 않는 ID 조회 시 예외 발생 AIS-13
 - [ ] test_update_user_profile: 사용자 프로필 업데이트 (이름 변경) AIS-14
 
