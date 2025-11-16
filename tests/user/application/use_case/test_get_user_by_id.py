@@ -48,3 +48,19 @@ def test_get_user_by_id(db_session):
     assert found_user.email == "test@example.com"
     assert found_user.name == "Test User"
     assert found_user.profile_picture == "https://example.com/photo.jpg"
+
+
+def test_get_user_by_id_not_found(db_session):
+    """존재하지 않는 ID 조회 시 예외 발생"""
+    from app.user.application.use_case.get_user_by_id import GetUserById
+    from app.user.domain.exceptions import UserNotFoundException
+
+    # Given: 빈 데이터베이스
+    repository = UserRepositoryImpl(db_session)
+    use_case = GetUserById(repository)
+
+    # When & Then: 존재하지 않는 ID로 조회 시 예외 발생
+    with pytest.raises(UserNotFoundException) as exc_info:
+        use_case.execute(999)
+
+    assert "999" in str(exc_info.value)

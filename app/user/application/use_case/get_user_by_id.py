@@ -1,5 +1,6 @@
 from app.user.application.port.user_repository_port import UserRepositoryPort
 from app.user.domain.user import User
+from app.user.domain.exceptions import UserNotFoundException
 
 
 class GetUserById:
@@ -10,4 +11,7 @@ class GetUserById:
         """
         ID로 사용자 조회
         """
-        return self.user_repository.find_by_id(user_id)
+        user = self.user_repository.find_by_id(user_id)
+        if user is None:
+            raise UserNotFoundException(user_id)
+        return user
