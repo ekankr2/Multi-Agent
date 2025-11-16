@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from app.anonymous_board.adapter.input.web.anonymous_board_router import anonymous_board_router
 from config.database.session import Base, engine
 from app.social_oauth.adapter.input.web.google_oauth2_router import authentication_router
+from app.user.infrastructure.orm.user_orm import UserORM  # Import to register User table
 
 load_dotenv()
 

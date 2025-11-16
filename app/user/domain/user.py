@@ -1,8 +1,10 @@
 from datetime import datetime
+from typing import Optional
 
 
 class User:
     def __init__(self, google_id: str, email: str, name: str, profile_picture: str):
+        self.id: Optional[int] = None
         self.google_id = google_id
         self.email = email
         self.name = name
