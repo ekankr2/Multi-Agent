@@ -1,35 +1,10 @@
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 
 from app.main import app
-from config.database.session import Base, get_db
+from config.database.session import get_db
 from app.user.domain.user import User
 from app.user.infrastructure.repository.user_repository_impl import UserRepositoryImpl
-
-
-@pytest.fixture
-def db_session():
-    """테스트용 SQLite 데이터베이스 세션"""
-    engine = create_engine(
-        "sqlite:///./test.db",
-        connect_args={"check_same_thread": False}  # Allow multi-threading for tests
-    )
-    Base.metadata.create_all(engine)
-
-    SessionLocal = sessionmaker(bind=engine)
-    session = SessionLocal()
-
-    yield session
-
-    session.close()
-    Base.metadata.drop_all(engine)
-
-    # Clean up test database file
-    import os
-    if os.path.exists("./test.db"):
-        os.remove("./test.db")
 
 
 @pytest.fixture

@@ -1,26 +1,4 @@
-import pytest
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from datetime import datetime
-
 from app.user.domain.user import User
-from app.user.infrastructure.orm.user_orm import UserORM  # Import to register the table
-from config.database.session import Base
-
-
-@pytest.fixture
-def db_session():
-    """테스트용 인메모리 SQLite 데이터베이스 세션"""
-    engine = create_engine("sqlite:///:memory:")
-    Base.metadata.create_all(engine)
-
-    SessionLocal = sessionmaker(bind=engine)
-    session = SessionLocal()
-
-    yield session
-
-    session.close()
-    Base.metadata.drop_all(engine)
 
 
 def test_user_repository_save(db_session):
