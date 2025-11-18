@@ -123,8 +123,8 @@
 #### 3.2 Get Current User Dependency
 **[백로그 AIS-24] Get Current User Dependency 구현**
 
-- [ ] test_get_current_user_from_session: 세션에서 현재 사용자 조회
-- [ ] test_get_current_user_session_user_not_found: 세션은 있지만 User가 DB에 없는 경우 예외 발생
+- [x] test_get_current_user_from_session: 세션에서 현재 사용자 조회
+- [x] test_get_current_user_session_user_not_found: 세션은 있지만 User가 DB에 없는 경우 예외 발생
 
 ---
 

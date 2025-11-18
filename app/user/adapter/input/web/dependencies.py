@@ -1,5 +1,5 @@
 from typing import Optional, Tuple
-from fastapi import Header, HTTPException, Depends
+from fastapi import Header, HTTPException, Depends, Request
 from sqlalchemy.orm import Session
 
 from config.database.session import get_db
@@ -60,3 +60,26 @@ def get_current_user_and_db(
         return user, db
     except UserNotFoundException:
         raise HTTPException(status_code=401, detail="Unauthorized")
+
+
+def get_current_user_from_session(
+    request: Request,
+    db: Session = Depends(get_db)
+) -> User:
+    """
+    세션에서 현재 인증된 사용자 조회
+
+    SessionValidationMiddleware가 request.state.user_id를 주입한 후 호출됨.
+    """
+    # request.state에서 user_id 추출 (SessionValidationMiddleware가 주입)
+    user_id = request.state.user_id
+
+    # UserRepository로 User 조회
+    repository = UserRepositoryImpl(db)
+    user = repository.find_by_id(user_id)
+
+    # User가 없으면 401 에러 (세션은 있지만 사용자가 삭제된 경우)
+    if user is None:
+        raise HTTPException(status_code=401, detail="User not found")
+
+    return user
