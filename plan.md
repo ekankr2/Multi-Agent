@@ -54,7 +54,7 @@
 #### 2.1 게시글 생성 기능
 **[백로그 AIS-18] Board 생성 기능 전체 구현 (Domain → Use Case → Repository → API)**
 
-- [ ] test_board_creation_with_user_id: Board 엔티티 생성 시 user_id 포함
+- [x] test_board_creation_with_user_id: Board 엔티티 생성 시 user_id 포함
 - [ ] test_board_has_title_and_content: Board는 title(최대 255자), content(최대 2000자) 포함
 - [ ] test_board_has_timestamps: Board 생성 시 created_at, updated_at 자동 설정
 - [ ] test_board_title_max_length_validation: title이 255자 초과 시 예외 발생
