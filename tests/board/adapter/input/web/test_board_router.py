@@ -132,3 +132,41 @@ def test_get_board_list_endpoint_unauthenticated(client):
 
     # Then: 401 Unauthorized 에러 반환
     assert response.status_code == 401
+
+
+def test_get_board_detail_endpoint(client, db_session, test_user):
+    """GET /board/{board_id} - 게시글 상세 조회 성공"""
+    # Given: 테스트용 게시글 1개 생성
+    board_repository = BoardRepositoryImpl(db_session)
+    board = Board(user_id=test_user.id, title="Detail Board", content="Detail Content")
+    saved_board = board_repository.save(board)
+
+    # When: GET /board/{board_id} 요청 (인증된 사용자로)
+    response = client.get(
+        f"/board/{saved_board.id}",
+        headers={"X-User-Id": str(test_user.id)}
+    )
+
+    # Then: 게시글 상세 정보가 반환됨
+    assert response.status_code == 200
+    data = response.json()
+    assert data["id"] == saved_board.id
+    assert data["title"] == "Detail Board"
+    assert data["content"] == "Detail Content"
+    assert data["user_id"] == test_user.id
+    # 작성자 정보 포함 확인
+    assert "author" in data
+    assert data["author"]["name"] == test_user.name
+    assert data["author"]["profile_picture"] == test_user.profile_picture
+
+
+def test_get_board_detail_endpoint_not_found(client, test_user):
+    """GET /board/{board_id} - 없는 게시글 조회 시 404 에러"""
+    # When: GET /board/999 요청 (존재하지 않는 ID)
+    response = client.get(
+        "/board/999",
+        headers={"X-User-Id": str(test_user.id)}
+    )
+
+    # Then: 404 Not Found 에러 반환
+    assert response.status_code == 404

@@ -79,13 +79,13 @@
 #### 2.3 게시글 상세 조회 기능
 **[백로그 AIS-20] Board 상세 조회 기능 전체 구현**
 
-- [ ] test_board_repository_find_by_id: id로 Board 조회
-- [ ] test_board_repository_find_by_id_not_found: 존재하지 않는 Board 조회 시 None 반환
-- [ ] test_get_board_detail_authenticated: 인증된 사용자가 게시글 상세 조회
-- [ ] test_get_board_detail_not_found: 존재하지 않는 게시글 조회 시 예외 발생
-- [ ] test_board_response_includes_author_info: Board 응답에 작성자 정보(name, profile_picture) 포함
-- [ ] test_get_board_detail_endpoint: GET /board/{board_id} - 게시글 상세 조회 성공
-- [ ] test_get_board_detail_endpoint_not_found: GET /board/{board_id} - 없는 게시글 조회 시 404 에러
+- [x] test_board_repository_find_by_id: id로 Board 조회
+- [x] test_board_repository_find_by_id_not_found: 존재하지 않는 Board 조회 시 None 반환
+- [x] test_get_board_detail_authenticated: 인증된 사용자가 게시글 상세 조회
+- [x] test_get_board_detail_not_found: 존재하지 않는 게시글 조회 시 예외 발생
+- [x] test_board_response_includes_author_info: Board 응답에 작성자 정보(name, profile_picture) 포함
+- [x] test_get_board_detail_endpoint: GET /board/{board_id} - 게시글 상세 조회 성공
+- [x] test_get_board_detail_endpoint_not_found: GET /board/{board_id} - 없는 게시글 조회 시 404 에러
 
 #### 2.4 게시글 수정 기능
 **[백로그 AIS-21] Board 수정 기능 전체 구현 (권한 검증 포함)**

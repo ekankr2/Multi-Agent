@@ -7,6 +7,8 @@ from sqlalchemy.orm import Session
 from config.database.session import get_db
 from app.board.application.use_case.create_board import CreateBoard
 from app.board.application.use_case.get_board_list import GetBoardList
+from app.board.application.use_case.get_board_detail import GetBoardDetail
+from app.board.domain.exceptions import BoardNotFoundException
 from app.board.infrastructure.repository.board_repository_impl import BoardRepositoryImpl
 from app.user.infrastructure.repository.user_repository_impl import UserRepositoryImpl
 
@@ -117,3 +119,41 @@ async def get_board_list(
         ]
     except ValueError as e:
         raise HTTPException(status_code=401, detail=str(e))
+
+
+@board_router.get("/{board_id}", response_model=BoardListItemResponse)
+async def get_board_detail(
+    board_id: int,
+    x_user_id: int | None = Header(None, alias="X-User-Id"),
+    db: Session = Depends(get_db)
+):
+    """게시글 상세 조회"""
+    # 인증 확인
+    if x_user_id is None:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    # Use Case 실행
+    board_repository = BoardRepositoryImpl(db)
+    user_repository = UserRepositoryImpl(db)
+    use_case = GetBoardDetail(board_repository, user_repository)
+
+    try:
+        board = use_case.execute(board_id=board_id)
+
+        # Dict를 Response 모델로 변환
+        return BoardListItemResponse(
+            id=board["id"],
+            user_id=board["user_id"],
+            title=board["title"],
+            content=board["content"],
+            created_at=board["created_at"].isoformat(),
+            updated_at=board["updated_at"].isoformat(),
+            author=AuthorResponse(
+                id=board["author"]["id"],
+                email=board["author"]["email"],
+                name=board["author"]["name"],
+                profile_picture=board["author"]["profile_picture"]
+            )
+        )
+    except BoardNotFoundException:
+        raise HTTPException(status_code=404, detail="Board not found")

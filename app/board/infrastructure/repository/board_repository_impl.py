@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
@@ -53,3 +53,20 @@ class BoardRepositoryImpl(BoardRepository):
             )
             for board_orm in board_orms
         ]
+
+    def find_by_id(self, board_id: int) -> Optional[Board]:
+        """id로 Board 조회"""
+        board_orm = self.db.query(BoardORM).filter(BoardORM.id == board_id).first()
+
+        if board_orm is None:
+            return None
+
+        # ORM -> Domain Entity 변환
+        return Board(
+            id=board_orm.id,
+            user_id=board_orm.user_id,
+            title=board_orm.title,
+            content=board_orm.content,
+            created_at=board_orm.created_at,
+            updated_at=board_orm.updated_at
+        )

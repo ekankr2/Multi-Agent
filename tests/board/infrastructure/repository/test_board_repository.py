@@ -50,3 +50,35 @@ def test_board_repository_find_all(db_session):
     assert boards[0].id == saved_board3.id  # 가장 최근
     assert boards[1].id == saved_board2.id
     assert boards[2].id == saved_board1.id  # 가장 오래된
+
+
+def test_board_repository_find_by_id(db_session):
+    """id로 Board 조회"""
+    # Given: Board를 저장
+    repository = BoardRepositoryImpl(db_session)
+    board = Board(user_id=1, title="Test Board", content="Test Content")
+    saved_board = repository.save(board)
+
+    # When: id로 Board 조회
+    found_board = repository.find_by_id(saved_board.id)
+
+    # Then: 저장된 Board가 반환됨
+    assert found_board is not None
+    assert found_board.id == saved_board.id
+    assert found_board.user_id == 1
+    assert found_board.title == "Test Board"
+    assert found_board.content == "Test Content"
+    assert found_board.created_at is not None
+    assert found_board.updated_at is not None
+
+
+def test_board_repository_find_by_id_not_found(db_session):
+    """존재하지 않는 Board 조회 시 None 반환"""
+    # Given: 빈 데이터베이스
+    repository = BoardRepositoryImpl(db_session)
+
+    # When: 존재하지 않는 id로 조회
+    found_board = repository.find_by_id(999)
+
+    # Then: None이 반환됨
+    assert found_board is None
