@@ -75,3 +75,12 @@ def test_get_me_endpoint_authenticated(client, test_user):
     assert "google_id" not in data  # google_id는 민감 정보이므로 응답에 포함하지 않음
     assert "created_at" in data
     assert "updated_at" in data
+
+
+def test_get_me_endpoint_unauthenticated(client):
+    """GET /user/me - 인증되지 않은 요청 시 401 에러"""
+    # When: GET /user/me 요청 (인증 헤더 없이)
+    response = client.get("/user/me")
+
+    # Then: 401 Unauthorized 에러 반환
+    assert response.status_code == 401

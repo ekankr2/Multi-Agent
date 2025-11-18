@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import Header, HTTPException, Depends
 from sqlalchemy.orm import Session
 
@@ -9,7 +10,7 @@ from app.user.domain.exceptions import UserNotFoundException
 
 
 def get_current_user(
-    x_user_id: str = Header(..., alias="X-User-Id"),
+    x_user_id: Optional[str] = Header(None, alias="X-User-Id"),
     db: Session = Depends(get_db)
 ) -> User:
     """
@@ -17,6 +18,9 @@ def get_current_user(
 
     TODO: Phase 3에서 session-based authentication으로 교체 예정
     """
+    if x_user_id is None:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
     try:
         user_id = int(x_user_id)
     except ValueError:
