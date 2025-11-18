@@ -55,16 +55,16 @@
 **[백로그 AIS-18] Board 생성 기능 전체 구현 (Domain → Use Case → Repository → API)**
 
 - [x] test_board_creation_with_user_id: Board 엔티티 생성 시 user_id 포함
-- [ ] test_board_has_title_and_content: Board는 title(최대 255자), content(최대 2000자) 포함
-- [ ] test_board_has_timestamps: Board 생성 시 created_at, updated_at 자동 설정
-- [ ] test_board_title_max_length_validation: title이 255자 초과 시 예외 발생
-- [ ] test_board_content_max_length_validation: content가 2000자 초과 시 예외 발생
-- [ ] test_board_repository_save: BoardRepository가 Board를 데이터베이스에 저장
-- [ ] test_create_board_authenticated: 인증된 사용자가 게시글 작성
-- [ ] test_create_board_unauthenticated: 인증되지 않은 사용자는 게시글 작성 불가
-- [ ] test_create_board_endpoint: POST /board - 게시글 작성 성공
-- [ ] test_create_board_endpoint_unauthenticated: POST /board - 인증 안 된 요청 시 401 에러
-- [ ] test_create_board_endpoint_validation_error: POST /board - 유효성 검증 실패 시 422 에러
+- [x] test_board_has_title_and_content: Board는 title(최대 255자), content(최대 2000자) 포함
+- [x] test_board_has_timestamps: Board 생성 시 created_at, updated_at 자동 설정
+- [x] test_board_title_max_length_validation: title이 255자 초과 시 예외 발생
+- [x] test_board_content_max_length_validation: content가 2000자 초과 시 예외 발생
+- [x] test_board_repository_save: BoardRepository가 Board를 데이터베이스에 저장
+- [x] test_create_board_authenticated: 인증된 사용자가 게시글 작성
+- [x] test_create_board_unauthenticated: 인증되지 않은 사용자는 게시글 작성 불가
+- [x] test_create_board_endpoint: POST /board - 게시글 작성 성공
+- [x] test_create_board_endpoint_unauthenticated: POST /board - 인증 안 된 요청 시 401 에러
+- [x] test_create_board_endpoint_validation_error: POST /board - 유효성 검증 실패 시 422 에러
 
 #### 2.2 게시글 목록 조회 기능
 **[백로그 AIS-19] Board 목록 조회 기능 전체 구현**
