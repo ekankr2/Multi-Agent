@@ -1,10 +1,14 @@
 import uuid
-from fastapi import APIRouter, Response, Request, Cookie
+from fastapi import APIRouter, Response, Request, Cookie, Depends
 from fastapi.responses import RedirectResponse
+from sqlalchemy.orm import Session
 
 from config.redis_config import get_redis
+from config.database.session import get_db
 from app.social_oauth.application.usecase.google_oauth2_usecase import GoogleOAuth2UseCase
 from app.social_oauth.infrastructure.service.google_oauth2_service import GoogleOAuth2Service
+from app.user.application.use_case.register_or_login_user import RegisterOrLoginUser
+from app.user.infrastructure.repository.user_repository_impl import UserRepositoryImpl
 
 authentication_router = APIRouter()
 service = GoogleOAuth2Service()
@@ -23,7 +27,8 @@ async def redirect_to_google():
 async def process_google_redirect(
     response: Response,
     code: str,
-    state: str | None = None
+    state: str | None = None,
+    db: Session = Depends(get_db)
 ):
     print("[DEBUG] /google/redirect called")
     print("code:", code)
@@ -32,6 +37,21 @@ async def process_google_redirect(
     # code -> access token
     access_token = usecase.login_and_fetch_user(state or "", code)
     print("[DEBUG] Access token received:", access_token.access_token)
+
+    # Fetch user profile from Google
+    user_profile = service.fetch_user_profile(access_token)
+    print("[DEBUG] User profile fetched:", user_profile)
+
+    # Save or update user in database
+    user_repository = UserRepositoryImpl(db)
+    register_or_login_usecase = RegisterOrLoginUser(user_repository)
+    user = register_or_login_usecase.execute(
+        google_id=user_profile["sub"],
+        email=user_profile["email"],
+        name=user_profile["name"],
+        profile_picture=user_profile["picture"]
+    )
+    print("[DEBUG] User saved/updated:", user.id)
 
     # session_id 생성
     session_id = str(uuid.uuid4())

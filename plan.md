@@ -39,7 +39,7 @@
 #### 1.5 User Domain Integration with OAuth
 
 **Google OAuth 콜백 처리**
-- [ ] test_google_oauth_callback_creates_user: Google OAuth 콜백 시 User 자동 생성 AIS-17
+- [x] test_google_oauth_callback_creates_user: Google OAuth 콜백 시 User 자동 생성 AIS-17
 - [ ] test_google_oauth_callback_updates_last_login: 기존 User의 경우 last_login_at 갱신 AIS-17
 
 ---
