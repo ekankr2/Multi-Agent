@@ -95,3 +95,13 @@ class BoardRepositoryImpl(BoardRepository):
             created_at=board_orm.created_at,
             updated_at=board_orm.updated_at
         )
+
+    def delete(self, board_id: int) -> None:
+        """Board를 삭제"""
+        board_orm = self.db.query(BoardORM).filter(BoardORM.id == board_id).first()
+
+        if board_orm is None:
+            raise ValueError(f"Board with id {board_id} not found")
+
+        self.db.delete(board_orm)
+        self.db.commit()

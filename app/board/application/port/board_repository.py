@@ -26,3 +26,8 @@ class BoardRepository(ABC):
     def update(self, board: Board) -> Board:
         """Board를 업데이트하고 업데이트된 Board 반환"""
         pass
+
+    @abstractmethod
+    def delete(self, board_id: int) -> None:
+        """Board를 삭제"""
+        pass

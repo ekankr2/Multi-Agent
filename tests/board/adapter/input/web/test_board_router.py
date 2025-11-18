@@ -230,3 +230,49 @@ def test_update_board_endpoint_forbidden(client, db_session, test_user):
     unchanged_board = board_repository.find_by_id(saved_board.id)
     assert unchanged_board.title == "Original Title"
     assert unchanged_board.content == "Original Content"
+
+
+def test_delete_board_endpoint(client, db_session, test_user):
+    """DELETE /board/{board_id} - 게시글 삭제 성공"""
+    # Given: 테스트용 게시글 1개 생성
+    board_repository = BoardRepositoryImpl(db_session)
+    board = Board(user_id=test_user.id, title="Test Board", content="Test Content")
+    saved_board = board_repository.save(board)
+    board_id = saved_board.id
+
+    # When: DELETE /board/{board_id} 요청 (작성자로)
+    response = client.delete(
+        f"/board/{board_id}",
+        headers={"X-User-Id": str(test_user.id)}
+    )
+
+    # Then: 게시글이 성공적으로 삭제됨
+    assert response.status_code == 204
+
+    # 데이터베이스에서 확인 - 삭제됨
+    deleted_board = board_repository.find_by_id(board_id)
+    assert deleted_board is None
+
+
+def test_delete_board_endpoint_forbidden(client, db_session, test_user):
+    """DELETE /board/{board_id} - 작성자 아닌 경우 403 에러"""
+    # Given: 다른 사용자가 작성한 게시글
+    board_repository = BoardRepositoryImpl(db_session)
+    other_user_id = test_user.id + 1  # 다른 사용자
+    board = Board(user_id=other_user_id, title="Test Board", content="Test Content")
+    saved_board = board_repository.save(board)
+    board_id = saved_board.id
+
+    # When: DELETE /board/{board_id} 요청 (다른 사용자로)
+    response = client.delete(
+        f"/board/{board_id}",
+        headers={"X-User-Id": str(test_user.id)}
+    )
+
+    # Then: 403 Forbidden 에러 반환
+    assert response.status_code == 403
+
+    # 데이터베이스에서 확인 - 삭제되지 않음
+    unchanged_board = board_repository.find_by_id(board_id)
+    assert unchanged_board is not None
+    assert unchanged_board.title == "Test Board"

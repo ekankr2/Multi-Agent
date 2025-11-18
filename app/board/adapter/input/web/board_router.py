@@ -9,6 +9,7 @@ from app.board.application.use_case.create_board import CreateBoard
 from app.board.application.use_case.get_board_list import GetBoardList
 from app.board.application.use_case.get_board_detail import GetBoardDetail
 from app.board.application.use_case.update_board import UpdateBoard
+from app.board.application.use_case.delete_board import DeleteBoard
 from app.board.domain.exceptions import BoardNotFoundException, ForbiddenException
 from app.board.infrastructure.repository.board_repository_impl import BoardRepositoryImpl
 from app.user.infrastructure.repository.user_repository_impl import UserRepositoryImpl
@@ -204,3 +205,27 @@ async def update_board(
         raise HTTPException(status_code=403, detail=str(e))
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e))
+
+
+@board_router.delete("/{board_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_board(
+    board_id: int,
+    x_user_id: int | None = Header(None, alias="X-User-Id"),
+    db: Session = Depends(get_db)
+):
+    """게시글 삭제 (작성자만 가능)"""
+    # 인증 확인
+    if x_user_id is None:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    # Use Case 실행
+    board_repository = BoardRepositoryImpl(db)
+    use_case = DeleteBoard(board_repository)
+
+    try:
+        use_case.execute(board_id=board_id, user_id=x_user_id)
+        return None  # 204 No Content
+    except BoardNotFoundException:
+        raise HTTPException(status_code=404, detail="Board not found")
+    except ForbiddenException as e:
+        raise HTTPException(status_code=403, detail=str(e))

@@ -110,3 +110,19 @@ def test_board_repository_update(db_session):
     assert found_board.title == "Updated Title"
     assert found_board.content == "Updated Content"
     assert found_board.updated_at > original_updated_at
+
+
+def test_board_repository_delete(db_session):
+    """Board 삭제"""
+    # Given: Board를 저장
+    repository = BoardRepositoryImpl(db_session)
+    board = Board(user_id=1, title="Test Board", content="Test Content")
+    saved_board = repository.save(board)
+    board_id = saved_board.id
+
+    # When: Board 삭제
+    repository.delete(board_id)
+
+    # Then: 데이터베이스에서 삭제됨
+    found_board = repository.find_by_id(board_id)
+    assert found_board is None

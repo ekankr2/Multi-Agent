@@ -100,11 +100,11 @@
 #### 2.5 게시글 삭제 기능
 **[백로그 AIS-22] Board 삭제 기능 전체 구현 (권한 검증 포함)**
 
-- [ ] test_board_repository_delete: Board 삭제
-- [ ] test_delete_board_by_author: 작성자가 본인 게시글 삭제 성공
-- [ ] test_delete_board_by_non_author: 다른 사용자가 삭제 시도 시 403 에러
-- [ ] test_delete_board_endpoint: DELETE /board/{board_id} - 게시글 삭제 성공
-- [ ] test_delete_board_endpoint_forbidden: DELETE /board/{board_id} - 작성자 아닌 경우 403 에러
+- [x] test_board_repository_delete: Board 삭제
+- [x] test_delete_board_by_author: 작성자가 본인 게시글 삭제 성공
+- [x] test_delete_board_by_non_author: 다른 사용자가 삭제 시도 시 403 에러
+- [x] test_delete_board_endpoint: DELETE /board/{board_id} - 게시글 삭제 성공
+- [x] test_delete_board_endpoint_forbidden: DELETE /board/{board_id} - 작성자 아닌 경우 403 에러
 
 ---
 
