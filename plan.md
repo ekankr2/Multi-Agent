@@ -115,10 +115,10 @@
 #### 3.1 Session Validation Middleware
 **[백로그 AIS-23] Session Validation Middleware 구현**
 
-- [ ] test_session_middleware_valid_session: 유효한 세션으로 요청 시 user_id 컨텍스트에 주입
-- [ ] test_session_middleware_invalid_session: 유효하지 않은 세션 토큰 시 401 에러
-- [ ] test_session_middleware_missing_session: 세션 쿠키 없이 요청 시 401 에러
-- [ ] test_session_middleware_expired_session: 만료된 세션 시 401 에러
+- [x] test_session_middleware_valid_session: 유효한 세션으로 요청 시 user_id 컨텍스트에 주입
+- [x] test_session_middleware_invalid_session: 유효하지 않은 세션 토큰 시 401 에러
+- [x] test_session_middleware_missing_session: 세션 쿠키 없이 요청 시 401 에러
+- [x] test_session_middleware_expired_session: 만료된 세션 시 401 에러
 
 #### 3.2 Get Current User Dependency
 **[백로그 AIS-24] Get Current User Dependency 구현**
