@@ -108,23 +108,24 @@
 
 ---
 
-### Phase 3: Session & Authentication Middleware
+### Phase 3: Session-Based Authentication
 
 > **백로그 정책**: Phase 3도 기능 단위로 백로그 통합
 
-#### 3.1 Session Validation Middleware
-**[백로그 AIS-23] Session Validation Middleware 구현**
-
-- [x] test_session_middleware_valid_session: 유효한 세션으로 요청 시 user_id 컨텍스트에 주입
-- [x] test_session_middleware_invalid_session: 유효하지 않은 세션 토큰 시 401 에러
-- [x] test_session_middleware_missing_session: 세션 쿠키 없이 요청 시 401 에러
-- [x] test_session_middleware_expired_session: 만료된 세션 시 401 에러
-
-#### 3.2 Get Current User Dependency
+#### 3.1 Get Current User Dependency (Session-Based)
 **[백로그 AIS-24] Get Current User Dependency 구현**
 
 - [x] test_get_current_user_from_session: 세션에서 현재 사용자 조회
 - [x] test_get_current_user_session_user_not_found: 세션은 있지만 User가 DB에 없는 경우 예외 발생
+
+#### 3.2 Session-Based Authentication Integration
+**[백로그 AIS-28] 세션 기반 인증으로 전체 엔드포인트 통합 (Refactoring)**
+
+- [x] get_current_user_from_session을 self-contained로 리팩터링 (미들웨어 제거)
+- [x] Board 엔드포인트 전체를 세션 기반 인증으로 전환
+- [x] User 엔드포인트 전체를 세션 기반 인증으로 전환
+- [x] 테스트 인프라 구축 (mock_redis, create_session_cookie fixtures)
+- [x] 모든 테스트를 쿠키 기반으로 업데이트
 
 ---
 
