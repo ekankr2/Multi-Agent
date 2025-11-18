@@ -90,12 +90,12 @@
 #### 2.4 게시글 수정 기능
 **[백로그 AIS-21] Board 수정 기능 전체 구현 (권한 검증 포함)**
 
-- [ ] test_board_update_title_and_content: Board 수정 시 updated_at 갱신
-- [ ] test_board_repository_update: Board 업데이트
-- [ ] test_update_board_by_author: 작성자가 본인 게시글 수정 성공
-- [ ] test_update_board_by_non_author: 다른 사용자가 수정 시도 시 403 에러
-- [ ] test_update_board_endpoint: PATCH /board/{board_id} - 게시글 수정 성공
-- [ ] test_update_board_endpoint_forbidden: PATCH /board/{board_id} - 작성자 아닌 경우 403 에러
+- [x] test_board_update_title_and_content: Board 수정 시 updated_at 갱신
+- [x] test_board_repository_update: Board 업데이트
+- [x] test_update_board_by_author: 작성자가 본인 게시글 수정 성공
+- [x] test_update_board_by_non_author: 다른 사용자가 수정 시도 시 403 에러
+- [x] test_update_board_endpoint: PATCH /board/{board_id} - 게시글 수정 성공
+- [x] test_update_board_endpoint_forbidden: PATCH /board/{board_id} - 작성자 아닌 경우 403 에러
 
 #### 2.5 게시글 삭제 기능
 **[백로그 AIS-22] Board 삭제 기능 전체 구현 (권한 검증 포함)**

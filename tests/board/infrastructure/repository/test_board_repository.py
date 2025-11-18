@@ -82,3 +82,31 @@ def test_board_repository_find_by_id_not_found(db_session):
 
     # Then: None이 반환됨
     assert found_board is None
+
+
+def test_board_repository_update(db_session):
+    """Board 업데이트"""
+    # Given: Board를 저장
+    repository = BoardRepositoryImpl(db_session)
+    board = Board(user_id=1, title="Original Title", content="Original Content")
+    saved_board = repository.save(board)
+    original_updated_at = saved_board.updated_at
+
+    # 시간 차이를 보장하기 위해 약간 대기
+    time.sleep(0.01)
+
+    # When: Board 수정 후 업데이트
+    saved_board.update(title="Updated Title", content="Updated Content")
+    updated_board = repository.update(saved_board)
+
+    # Then: 변경사항이 데이터베이스에 반영됨
+    assert updated_board.id == saved_board.id
+    assert updated_board.title == "Updated Title"
+    assert updated_board.content == "Updated Content"
+    assert updated_board.updated_at > original_updated_at
+
+    # 데이터베이스에서 다시 조회하여 확인
+    found_board = repository.find_by_id(saved_board.id)
+    assert found_board.title == "Updated Title"
+    assert found_board.content == "Updated Content"
+    assert found_board.updated_at > original_updated_at

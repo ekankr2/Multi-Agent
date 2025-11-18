@@ -170,3 +170,63 @@ def test_get_board_detail_endpoint_not_found(client, test_user):
 
     # Then: 404 Not Found 에러 반환
     assert response.status_code == 404
+
+
+def test_update_board_endpoint(client, db_session, test_user):
+    """PATCH /board/{board_id} - 게시글 수정 성공"""
+    # Given: 테스트용 게시글 1개 생성
+    board_repository = BoardRepositoryImpl(db_session)
+    board = Board(user_id=test_user.id, title="Original Title", content="Original Content")
+    saved_board = board_repository.save(board)
+
+    # When: PATCH /board/{board_id} 요청 (작성자로)
+    update_data = {
+        "title": "Updated Title",
+        "content": "Updated Content"
+    }
+    response = client.patch(
+        f"/board/{saved_board.id}",
+        json=update_data,
+        headers={"X-User-Id": str(test_user.id)}
+    )
+
+    # Then: 게시글이 성공적으로 수정됨
+    assert response.status_code == 200
+    data = response.json()
+    assert data["id"] == saved_board.id
+    assert data["title"] == "Updated Title"
+    assert data["content"] == "Updated Content"
+    assert data["user_id"] == test_user.id
+
+    # 데이터베이스에서 확인
+    updated_board = board_repository.find_by_id(saved_board.id)
+    assert updated_board.title == "Updated Title"
+    assert updated_board.content == "Updated Content"
+
+
+def test_update_board_endpoint_forbidden(client, db_session, test_user):
+    """PATCH /board/{board_id} - 작성자 아닌 경우 403 에러"""
+    # Given: 다른 사용자가 작성한 게시글
+    board_repository = BoardRepositoryImpl(db_session)
+    other_user_id = test_user.id + 1  # 다른 사용자
+    board = Board(user_id=other_user_id, title="Original Title", content="Original Content")
+    saved_board = board_repository.save(board)
+
+    # When: PATCH /board/{board_id} 요청 (다른 사용자로)
+    update_data = {
+        "title": "Updated Title",
+        "content": "Updated Content"
+    }
+    response = client.patch(
+        f"/board/{saved_board.id}",
+        json=update_data,
+        headers={"X-User-Id": str(test_user.id)}
+    )
+
+    # Then: 403 Forbidden 에러 반환
+    assert response.status_code == 403
+
+    # 데이터베이스에서 확인 - 변경되지 않음
+    unchanged_board = board_repository.find_by_id(saved_board.id)
+    assert unchanged_board.title == "Original Title"
+    assert unchanged_board.content == "Original Content"

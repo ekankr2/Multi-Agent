@@ -94,3 +94,28 @@ def test_board_content_max_length_validation():
             title="Test Title",
             content=content
         )
+
+
+def test_board_update_title_and_content():
+    """Board 수정 시 updated_at 갱신"""
+    from app.board.domain.board import Board
+    import time
+
+    # Given: Board 엔티티 생성
+    board = Board(
+        user_id=1,
+        title="Original Title",
+        content="Original Content"
+    )
+    original_updated_at = board.updated_at
+
+    # 시간 차이를 보장하기 위해 약간 대기
+    time.sleep(0.01)
+
+    # When: 제목과 내용 수정
+    board.update(title="Updated Title", content="Updated Content")
+
+    # Then: 제목과 내용이 변경되고 updated_at이 갱신됨
+    assert board.title == "Updated Title"
+    assert board.content == "Updated Content"
+    assert board.updated_at > original_updated_at

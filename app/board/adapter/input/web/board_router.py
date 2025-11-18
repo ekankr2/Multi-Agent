@@ -8,7 +8,8 @@ from config.database.session import get_db
 from app.board.application.use_case.create_board import CreateBoard
 from app.board.application.use_case.get_board_list import GetBoardList
 from app.board.application.use_case.get_board_detail import GetBoardDetail
-from app.board.domain.exceptions import BoardNotFoundException
+from app.board.application.use_case.update_board import UpdateBoard
+from app.board.domain.exceptions import BoardNotFoundException, ForbiddenException
 from app.board.infrastructure.repository.board_repository_impl import BoardRepositoryImpl
 from app.user.infrastructure.repository.user_repository_impl import UserRepositoryImpl
 
@@ -17,6 +18,11 @@ board_router = APIRouter()
 
 
 class CreateBoardRequest(BaseModel):
+    title: str = Field(..., max_length=255)
+    content: str = Field(..., max_length=2000)
+
+
+class UpdateBoardRequest(BaseModel):
     title: str = Field(..., max_length=255)
     content: str = Field(..., max_length=2000)
 
@@ -157,3 +163,44 @@ async def get_board_detail(
         )
     except BoardNotFoundException:
         raise HTTPException(status_code=404, detail="Board not found")
+
+
+@board_router.patch("/{board_id}", response_model=BoardResponse)
+async def update_board(
+    board_id: int,
+    request: UpdateBoardRequest,
+    x_user_id: int | None = Header(None, alias="X-User-Id"),
+    db: Session = Depends(get_db)
+):
+    """게시글 수정 (작성자만 가능)"""
+    # 인증 확인
+    if x_user_id is None:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    # Use Case 실행
+    board_repository = BoardRepositoryImpl(db)
+    user_repository = UserRepositoryImpl(db)
+    use_case = UpdateBoard(board_repository, user_repository)
+
+    try:
+        board = use_case.execute(
+            board_id=board_id,
+            user_id=x_user_id,
+            title=request.title,
+            content=request.content
+        )
+
+        return BoardResponse(
+            id=board.id,
+            user_id=board.user_id,
+            title=board.title,
+            content=board.content,
+            created_at=board.created_at.isoformat(),
+            updated_at=board.updated_at.isoformat()
+        )
+    except BoardNotFoundException:
+        raise HTTPException(status_code=404, detail="Board not found")
+    except ForbiddenException as e:
+        raise HTTPException(status_code=403, detail=str(e))
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))

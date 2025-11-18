@@ -21,3 +21,8 @@ class BoardRepository(ABC):
     def find_by_id(self, board_id: int) -> Optional[Board]:
         """id로 Board 조회"""
         pass
+
+    @abstractmethod
+    def update(self, board: Board) -> Board:
+        """Board를 업데이트하고 업데이트된 Board 반환"""
+        pass
