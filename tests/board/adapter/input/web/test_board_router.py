@@ -5,6 +5,8 @@ from app.main import app
 from config.database.session import get_db
 from app.user.domain.user import User
 from app.user.infrastructure.repository.user_repository_impl import UserRepositoryImpl
+from app.board.domain.board import Board
+from app.board.infrastructure.repository.board_repository_impl import BoardRepositoryImpl
 
 
 @pytest.fixture
@@ -93,3 +95,40 @@ def test_create_board_endpoint_validation_error(client, test_user):
 
     # Then: 422 Validation Error 반환
     assert response.status_code == 422
+
+
+def test_get_board_list_endpoint(client, db_session, test_user):
+    """GET /board - 게시글 목록 조회 성공"""
+    # Given: 테스트용 게시글 2개 생성
+    board_repository = BoardRepositoryImpl(db_session)
+    board1 = Board(user_id=test_user.id, title="Board 1", content="Content 1")
+    board2 = Board(user_id=test_user.id, title="Board 2", content="Content 2")
+    board_repository.save(board1)
+    board_repository.save(board2)
+
+    # When: GET /board 요청 (인증된 사용자로)
+    response = client.get(
+        "/board",
+        headers={"X-User-Id": str(test_user.id)}
+    )
+
+    # Then: 게시글 목록이 반환됨
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data) == 2
+    # 최신순 정렬 확인
+    assert data[0]["title"] == "Board 2"
+    assert data[1]["title"] == "Board 1"
+    # 작성자 정보 포함 확인
+    assert "author" in data[0]
+    assert data[0]["author"]["name"] == test_user.name
+    assert data[0]["author"]["profile_picture"] == test_user.profile_picture
+
+
+def test_get_board_list_endpoint_unauthenticated(client):
+    """GET /board - 인증 안 된 요청 시 401 에러"""
+    # When: GET /board 요청 (인증 헤더 없이)
+    response = client.get("/board")
+
+    # Then: 401 Unauthorized 에러 반환
+    assert response.status_code == 401

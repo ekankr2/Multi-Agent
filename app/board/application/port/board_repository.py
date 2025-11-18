@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+from typing import List
+
 from app.board.domain.board import Board
 
 
@@ -8,4 +10,9 @@ class BoardRepository(ABC):
     @abstractmethod
     def save(self, board: Board) -> Board:
         """Board를 저장하고 저장된 Board 반환"""
+        pass
+
+    @abstractmethod
+    def find_all(self) -> List[Board]:
+        """전체 Board 목록을 최신순으로 조회"""
         pass

@@ -1,3 +1,5 @@
+from typing import List
+
 from sqlalchemy.orm import Session
 
 from app.board.application.port.board_repository import BoardRepository
@@ -34,3 +36,20 @@ class BoardRepositoryImpl(BoardRepository):
             created_at=board_orm.created_at,
             updated_at=board_orm.updated_at
         )
+
+    def find_all(self) -> List[Board]:
+        """전체 Board 목록을 최신순으로 조회"""
+        board_orms = self.db.query(BoardORM).order_by(BoardORM.created_at.desc()).all()
+
+        # ORM -> Domain Entity 변환
+        return [
+            Board(
+                id=board_orm.id,
+                user_id=board_orm.user_id,
+                title=board_orm.title,
+                content=board_orm.content,
+                created_at=board_orm.created_at,
+                updated_at=board_orm.updated_at
+            )
+            for board_orm in board_orms
+        ]

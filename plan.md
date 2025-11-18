@@ -69,12 +69,12 @@
 #### 2.2 게시글 목록 조회 기능
 **[백로그 AIS-19] Board 목록 조회 기능 전체 구현**
 
-- [ ] test_board_repository_find_all: 전체 Board 목록 조회 (최신순 정렬)
-- [ ] test_get_board_list_authenticated: 인증된 사용자가 게시글 목록 조회
-- [ ] test_get_board_list_unauthenticated: 인증되지 않은 사용자는 목록 조회 불가
-- [ ] test_board_list_response_includes_author_info: Board 목록 응답 각 항목에 작성자 정보 포함
-- [ ] test_get_board_list_endpoint: GET /board - 게시글 목록 조회 성공
-- [ ] test_get_board_list_endpoint_unauthenticated: GET /board - 인증 안 된 요청 시 401 에러
+- [x] test_board_repository_find_all: 전체 Board 목록 조회 (최신순 정렬)
+- [x] test_get_board_list_authenticated: 인증된 사용자가 게시글 목록 조회
+- [x] test_get_board_list_unauthenticated: 인증되지 않은 사용자는 목록 조회 불가
+- [x] test_board_list_response_includes_author_info: Board 목록 응답 각 항목에 작성자 정보 포함
+- [x] test_get_board_list_endpoint: GET /board - 게시글 목록 조회 성공
+- [x] test_get_board_list_endpoint_unauthenticated: GET /board - 인증 안 된 요청 시 401 에러
 
 #### 2.3 게시글 상세 조회 기능
 **[백로그 AIS-20] Board 상세 조회 기능 전체 구현**
