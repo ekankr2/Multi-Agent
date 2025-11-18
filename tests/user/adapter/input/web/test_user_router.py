@@ -11,9 +11,9 @@ from app.user.infrastructure.repository.user_repository_impl import UserReposito
 
 @pytest.fixture
 def db_session():
-    """테스트용 인메모리 SQLite 데이터베이스 세션"""
+    """테스트용 SQLite 데이터베이스 세션"""
     engine = create_engine(
-        "sqlite:///:memory:",
+        "sqlite:///./test.db",
         connect_args={"check_same_thread": False}  # Allow multi-threading for tests
     )
     Base.metadata.create_all(engine)
@@ -25,6 +25,11 @@ def db_session():
 
     session.close()
     Base.metadata.drop_all(engine)
+
+    # Clean up test database file
+    import os
+    if os.path.exists("./test.db"):
+        os.remove("./test.db")
 
 
 @pytest.fixture
@@ -81,6 +86,39 @@ def test_get_me_endpoint_unauthenticated(client):
     """GET /user/me - 인증되지 않은 요청 시 401 에러"""
     # When: GET /user/me 요청 (인증 헤더 없이)
     response = client.get("/user/me")
+
+    # Then: 401 Unauthorized 에러 반환
+    assert response.status_code == 401
+
+
+def test_patch_me_endpoint(client, test_user):
+    """PATCH /user/me - 사용자 정보 수정 성공"""
+    # Given: 업데이트할 사용자 정보
+    update_data = {"name": "Updated Name"}
+
+    # When: PATCH /user/me 요청 (인증된 사용자로)
+    response = client.patch(
+        "/user/me",
+        json=update_data,
+        headers={"X-User-Id": str(test_user.id)}
+    )
+
+    # Then: 사용자 정보가 성공적으로 업데이트됨
+    assert response.status_code == 200
+    data = response.json()
+    assert data["id"] == test_user.id
+    assert data["name"] == "Updated Name"
+    assert data["email"] == test_user.email
+    assert "updated_at" in data
+
+
+def test_patch_me_endpoint_unauthenticated(client):
+    """PATCH /user/me - 인증되지 않은 요청 시 401 에러"""
+    # Given: 업데이트할 사용자 정보
+    update_data = {"name": "Updated Name"}
+
+    # When: PATCH /user/me 요청 (인증 헤더 없이)
+    response = client.patch("/user/me", json=update_data)
 
     # Then: 401 Unauthorized 에러 반환
     assert response.status_code == 401
