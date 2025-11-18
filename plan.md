@@ -148,8 +148,8 @@
 #### 4.3 End-to-End Scenarios
 **[백로그 AIS-27] E2E Scenarios**
 
-- [ ] test_e2e_google_login_and_create_board: Google 로그인 → 게시글 작성 → 목록 조회
-- [ ] test_e2e_multiple_users_board_interaction: 여러 사용자가 게시글 작성 및 각자 게시글 수정/삭제
+- [x] test_e2e_google_login_and_create_board: Google 로그인 → 게시글 작성 → 목록 조회
+- [x] test_e2e_multiple_users_board_interaction: 여러 사용자가 게시글 작성 및 각자 게시글 수정/삭제
 
 ---
 
