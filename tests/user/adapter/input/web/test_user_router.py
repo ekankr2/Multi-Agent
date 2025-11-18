@@ -35,14 +35,14 @@ def test_user(db_session):
     return repository.save(user)
 
 
-def test_get_me_endpoint_authenticated(client, test_user):
+def test_get_me_endpoint_authenticated(client, test_user, create_session_cookie):
     """GET /user/me - 인증된 사용자 정보 조회 성공"""
     # TODO: For now, we'll need to mock authentication
     # When: GET /user/me 요청 (인증된 사용자로)
     response = client.get(
         "/user/me",
         # This will need to be replaced with proper session-based auth
-        headers={"X-User-Id": str(test_user.id)}
+        cookies=create_session_cookie(test_user.id)
     )
 
     # Then: 사용자 정보가 정상적으로 반환됨
@@ -66,7 +66,7 @@ def test_get_me_endpoint_unauthenticated(client):
     assert response.status_code == 401
 
 
-def test_patch_me_endpoint(client, test_user):
+def test_patch_me_endpoint(client, test_user, create_session_cookie):
     """PATCH /user/me - 사용자 정보 수정 성공"""
     # Given: 업데이트할 사용자 정보
     update_data = {"name": "Updated Name"}
@@ -75,7 +75,7 @@ def test_patch_me_endpoint(client, test_user):
     response = client.patch(
         "/user/me",
         json=update_data,
-        headers={"X-User-Id": str(test_user.id)}
+        cookies=create_session_cookie(test_user.id)
     )
 
     # Then: 사용자 정보가 성공적으로 업데이트됨

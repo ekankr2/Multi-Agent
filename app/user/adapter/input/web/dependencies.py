@@ -3,6 +3,7 @@ from fastapi import Header, HTTPException, Depends, Request
 from sqlalchemy.orm import Session
 
 from config.database.session import get_db
+from config.redis_config import get_redis
 from app.user.application.use_case.get_user_by_id import GetUserById
 from app.user.infrastructure.repository.user_repository_impl import UserRepositoryImpl
 from app.user.domain.user import User
@@ -67,18 +68,28 @@ def get_current_user_from_session(
     db: Session = Depends(get_db)
 ) -> User:
     """
-    세션에서 현재 인증된 사용자 조회
+    세션 쿠키에서 현재 인증된 사용자 조회
 
-    SessionValidationMiddleware가 request.state.user_id를 주입한 후 호출됨.
+    세션 쿠키를 읽고 Redis에서 검증한 후 User 엔티티를 반환합니다.
     """
-    # request.state에서 user_id 추출 (SessionValidationMiddleware가 주입)
-    user_id = request.state.user_id
+    # 1. 쿠키에서 session_id 추출
+    session_id = request.cookies.get("session_id")
+    if not session_id:
+        raise HTTPException(status_code=401, detail="No session provided")
 
-    # UserRepository로 User 조회
+    # 2. Redis에서 세션 검증 및 user_id 조회
+    redis_client = get_redis()
+    user_id_str = redis_client.get(session_id)
+
+    if not user_id_str:
+        raise HTTPException(status_code=401, detail="Invalid or expired session")
+
+    # 3. user_id로 User 조회
+    user_id = int(user_id_str)
     repository = UserRepositoryImpl(db)
     user = repository.find_by_id(user_id)
 
-    # User가 없으면 401 에러 (세션은 있지만 사용자가 삭제된 경우)
+    # 4. User가 없으면 401 에러 (세션은 있지만 사용자가 삭제된 경우)
     if user is None:
         raise HTTPException(status_code=401, detail="User not found")
 

@@ -34,14 +34,18 @@ def test_app():
 
 def test_get_current_user_from_session(mock_db):
     """세션에서 현재 사용자 조회"""
-    # Given: request.state에 user_id가 주입된 상태
-    mock_request = Mock(spec=Request)
-    mock_request.state.user_id = 42
-
-    # Given: 해당 user_id로 User가 DB에 존재
     from app.user.infrastructure.repository.user_repository_impl import UserRepositoryImpl
     from unittest.mock import patch
 
+    # Given: request에 session_id 쿠키가 있음
+    mock_request = Mock(spec=Request)
+    mock_request.cookies = {"session_id": "valid-session-123"}
+
+    # Given: Redis에 유효한 세션이 있음
+    mock_redis = Mock()
+    mock_redis.get.return_value = "42"  # user_id
+
+    # Given: 해당 user_id로 User가 DB에 존재
     expected_user = User(
         google_id="google123",
         email="test@example.com",
@@ -50,17 +54,17 @@ def test_get_current_user_from_session(mock_db):
     )
     expected_user.id = 42
 
-    with patch.object(UserRepositoryImpl, 'find_by_id', return_value=expected_user):
-        # When: get_current_user 호출
-        # Note: The current implementation uses X-User-Id header, we need to refactor it
-        # to use request.state.user_id from SessionValidationMiddleware
-        from app.user.adapter.input.web.dependencies import get_current_user_from_session
-        user = get_current_user_from_session(request=mock_request, db=mock_db)
+    with patch('app.user.adapter.input.web.dependencies.get_redis', return_value=mock_redis):
+        with patch.object(UserRepositoryImpl, 'find_by_id', return_value=expected_user):
+            # When: get_current_user_from_session 호출
+            from app.user.adapter.input.web.dependencies import get_current_user_from_session
+            user = get_current_user_from_session(request=mock_request, db=mock_db)
 
-        # Then: User 엔티티가 반환됨
-        assert user.id == 42
-        assert user.email == "test@example.com"
-        assert user.name == "Test User"
+            # Then: User 엔티티가 반환됨
+            assert user.id == 42
+            assert user.email == "test@example.com"
+            assert user.name == "Test User"
+            mock_redis.get.assert_called_once_with("valid-session-123")
 
 
 def test_get_current_user_session_user_not_found(mock_db):
@@ -69,16 +73,21 @@ def test_get_current_user_session_user_not_found(mock_db):
     from app.user.infrastructure.repository.user_repository_impl import UserRepositoryImpl
     from unittest.mock import patch
 
-    # Given: request.state에 user_id가 주입된 상태
+    # Given: request에 session_id 쿠키가 있음
     mock_request = Mock(spec=Request)
-    mock_request.state.user_id = 999
+    mock_request.cookies = {"session_id": "valid-session-456"}
+
+    # Given: Redis에 유효한 세션이 있음
+    mock_redis = Mock()
+    mock_redis.get.return_value = "999"  # user_id
 
     # Given: 해당 user_id로 User가 DB에 없음
-    with patch.object(UserRepositoryImpl, 'find_by_id', return_value=None):
-        # When & Then: HTTPException 발생
-        from app.user.adapter.input.web.dependencies import get_current_user_from_session
-        with pytest.raises(HTTPException) as exc_info:
-            get_current_user_from_session(request=mock_request, db=mock_db)
+    with patch('app.user.adapter.input.web.dependencies.get_redis', return_value=mock_redis):
+        with patch.object(UserRepositoryImpl, 'find_by_id', return_value=None):
+            # When & Then: HTTPException 발생
+            from app.user.adapter.input.web.dependencies import get_current_user_from_session
+            with pytest.raises(HTTPException) as exc_info:
+                get_current_user_from_session(request=mock_request, db=mock_db)
 
-        assert exc_info.value.status_code == 401
-        assert "User not found" in exc_info.value.detail or "Unauthorized" in exc_info.value.detail
+            assert exc_info.value.status_code == 401
+            assert "User not found" in exc_info.value.detail

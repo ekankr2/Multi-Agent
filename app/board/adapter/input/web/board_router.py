@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException, Header, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
@@ -13,6 +13,8 @@ from app.board.application.use_case.delete_board import DeleteBoard
 from app.board.domain.exceptions import BoardNotFoundException, ForbiddenException
 from app.board.infrastructure.repository.board_repository_impl import BoardRepositoryImpl
 from app.user.infrastructure.repository.user_repository_impl import UserRepositoryImpl
+from app.user.adapter.input.web.dependencies import get_current_user_from_session
+from app.user.domain.user import User
 
 
 board_router = APIRouter()
@@ -57,21 +59,17 @@ class BoardListItemResponse(BaseModel):
 @board_router.post("", status_code=status.HTTP_201_CREATED, response_model=BoardResponse)
 async def create_board(
     request: CreateBoardRequest,
-    x_user_id: int | None = Header(None, alias="X-User-Id"),
+    current_user: User = Depends(get_current_user_from_session),
     db: Session = Depends(get_db)
 ):
     """게시글 생성"""
-    # 인증 확인
-    if x_user_id is None:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-
     # Use Case 실행
     repository = BoardRepositoryImpl(db)
     use_case = CreateBoard(repository)
 
     try:
         board = use_case.execute(
-            user_id=x_user_id,
+            user_id=current_user.id,
             title=request.title,
             content=request.content
         )
@@ -90,21 +88,17 @@ async def create_board(
 
 @board_router.get("", response_model=List[BoardListItemResponse])
 async def get_board_list(
-    x_user_id: int | None = Header(None, alias="X-User-Id"),
+    current_user: User = Depends(get_current_user_from_session),
     db: Session = Depends(get_db)
 ):
     """게시글 목록 조회"""
-    # 인증 확인
-    if x_user_id is None:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-
     # Use Case 실행
     board_repository = BoardRepositoryImpl(db)
     user_repository = UserRepositoryImpl(db)
     use_case = GetBoardList(board_repository, user_repository)
 
     try:
-        board_list = use_case.execute(user_id=x_user_id)
+        board_list = use_case.execute(user_id=current_user.id)
 
         # Dict를 Response 모델로 변환
         return [
@@ -131,14 +125,10 @@ async def get_board_list(
 @board_router.get("/{board_id}", response_model=BoardListItemResponse)
 async def get_board_detail(
     board_id: int,
-    x_user_id: int | None = Header(None, alias="X-User-Id"),
+    current_user: User = Depends(get_current_user_from_session),
     db: Session = Depends(get_db)
 ):
     """게시글 상세 조회"""
-    # 인증 확인
-    if x_user_id is None:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-
     # Use Case 실행
     board_repository = BoardRepositoryImpl(db)
     user_repository = UserRepositoryImpl(db)
@@ -170,14 +160,10 @@ async def get_board_detail(
 async def update_board(
     board_id: int,
     request: UpdateBoardRequest,
-    x_user_id: int | None = Header(None, alias="X-User-Id"),
+    current_user: User = Depends(get_current_user_from_session),
     db: Session = Depends(get_db)
 ):
     """게시글 수정 (작성자만 가능)"""
-    # 인증 확인
-    if x_user_id is None:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-
     # Use Case 실행
     board_repository = BoardRepositoryImpl(db)
     user_repository = UserRepositoryImpl(db)
@@ -186,7 +172,7 @@ async def update_board(
     try:
         board = use_case.execute(
             board_id=board_id,
-            user_id=x_user_id,
+            user_id=current_user.id,
             title=request.title,
             content=request.content
         )
@@ -210,20 +196,16 @@ async def update_board(
 @board_router.delete("/{board_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_board(
     board_id: int,
-    x_user_id: int | None = Header(None, alias="X-User-Id"),
+    current_user: User = Depends(get_current_user_from_session),
     db: Session = Depends(get_db)
 ):
     """게시글 삭제 (작성자만 가능)"""
-    # 인증 확인
-    if x_user_id is None:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-
     # Use Case 실행
     board_repository = BoardRepositoryImpl(db)
     use_case = DeleteBoard(board_repository)
 
     try:
-        use_case.execute(board_id=board_id, user_id=x_user_id)
+        use_case.execute(board_id=board_id, user_id=current_user.id)
         return None  # 204 No Content
     except BoardNotFoundException:
         raise HTTPException(status_code=404, detail="Board not found")

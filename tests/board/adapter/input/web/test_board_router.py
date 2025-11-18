@@ -37,7 +37,7 @@ def test_user(db_session):
     return repository.save(user)
 
 
-def test_create_board_endpoint(client, test_user):
+def test_create_board_endpoint(client, test_user, create_session_cookie):
     """POST /board - 게시글 작성 성공"""
     # Given: 게시글 데이터
     board_data = {
@@ -49,7 +49,7 @@ def test_create_board_endpoint(client, test_user):
     response = client.post(
         "/board",
         json=board_data,
-        headers={"X-User-Id": str(test_user.id)}
+        cookies=create_session_cookie(test_user.id)
     )
 
     # Then: 게시글이 성공적으로 생성됨
@@ -78,7 +78,7 @@ def test_create_board_endpoint_unauthenticated(client):
     assert response.status_code == 401
 
 
-def test_create_board_endpoint_validation_error(client, test_user):
+def test_create_board_endpoint_validation_error(client, test_user, create_session_cookie):
     """POST /board - 유효성 검증 실패 시 422 에러"""
     # Given: 잘못된 게시글 데이터 (제목이 너무 긺)
     board_data = {
@@ -90,14 +90,14 @@ def test_create_board_endpoint_validation_error(client, test_user):
     response = client.post(
         "/board",
         json=board_data,
-        headers={"X-User-Id": str(test_user.id)}
+        cookies=create_session_cookie(test_user.id)
     )
 
     # Then: 422 Validation Error 반환
     assert response.status_code == 422
 
 
-def test_get_board_list_endpoint(client, db_session, test_user):
+def test_get_board_list_endpoint(client, db_session, test_user, create_session_cookie):
     """GET /board - 게시글 목록 조회 성공"""
     # Given: 테스트용 게시글 2개 생성
     board_repository = BoardRepositoryImpl(db_session)
@@ -109,7 +109,7 @@ def test_get_board_list_endpoint(client, db_session, test_user):
     # When: GET /board 요청 (인증된 사용자로)
     response = client.get(
         "/board",
-        headers={"X-User-Id": str(test_user.id)}
+        cookies=create_session_cookie(test_user.id)
     )
 
     # Then: 게시글 목록이 반환됨
@@ -134,7 +134,7 @@ def test_get_board_list_endpoint_unauthenticated(client):
     assert response.status_code == 401
 
 
-def test_get_board_detail_endpoint(client, db_session, test_user):
+def test_get_board_detail_endpoint(client, db_session, test_user, create_session_cookie):
     """GET /board/{board_id} - 게시글 상세 조회 성공"""
     # Given: 테스트용 게시글 1개 생성
     board_repository = BoardRepositoryImpl(db_session)
@@ -144,7 +144,7 @@ def test_get_board_detail_endpoint(client, db_session, test_user):
     # When: GET /board/{board_id} 요청 (인증된 사용자로)
     response = client.get(
         f"/board/{saved_board.id}",
-        headers={"X-User-Id": str(test_user.id)}
+        cookies=create_session_cookie(test_user.id)
     )
 
     # Then: 게시글 상세 정보가 반환됨
@@ -160,19 +160,19 @@ def test_get_board_detail_endpoint(client, db_session, test_user):
     assert data["author"]["profile_picture"] == test_user.profile_picture
 
 
-def test_get_board_detail_endpoint_not_found(client, test_user):
+def test_get_board_detail_endpoint_not_found(client, test_user, create_session_cookie):
     """GET /board/{board_id} - 없는 게시글 조회 시 404 에러"""
     # When: GET /board/999 요청 (존재하지 않는 ID)
     response = client.get(
         "/board/999",
-        headers={"X-User-Id": str(test_user.id)}
+        cookies=create_session_cookie(test_user.id)
     )
 
     # Then: 404 Not Found 에러 반환
     assert response.status_code == 404
 
 
-def test_update_board_endpoint(client, db_session, test_user):
+def test_update_board_endpoint(client, db_session, test_user, create_session_cookie):
     """PATCH /board/{board_id} - 게시글 수정 성공"""
     # Given: 테스트용 게시글 1개 생성
     board_repository = BoardRepositoryImpl(db_session)
@@ -187,7 +187,7 @@ def test_update_board_endpoint(client, db_session, test_user):
     response = client.patch(
         f"/board/{saved_board.id}",
         json=update_data,
-        headers={"X-User-Id": str(test_user.id)}
+        cookies=create_session_cookie(test_user.id)
     )
 
     # Then: 게시글이 성공적으로 수정됨
@@ -204,7 +204,7 @@ def test_update_board_endpoint(client, db_session, test_user):
     assert updated_board.content == "Updated Content"
 
 
-def test_update_board_endpoint_forbidden(client, db_session, test_user):
+def test_update_board_endpoint_forbidden(client, db_session, test_user, create_session_cookie):
     """PATCH /board/{board_id} - 작성자 아닌 경우 403 에러"""
     # Given: 다른 사용자가 작성한 게시글
     board_repository = BoardRepositoryImpl(db_session)
@@ -220,7 +220,7 @@ def test_update_board_endpoint_forbidden(client, db_session, test_user):
     response = client.patch(
         f"/board/{saved_board.id}",
         json=update_data,
-        headers={"X-User-Id": str(test_user.id)}
+        cookies=create_session_cookie(test_user.id)
     )
 
     # Then: 403 Forbidden 에러 반환
@@ -232,7 +232,7 @@ def test_update_board_endpoint_forbidden(client, db_session, test_user):
     assert unchanged_board.content == "Original Content"
 
 
-def test_delete_board_endpoint(client, db_session, test_user):
+def test_delete_board_endpoint(client, db_session, test_user, create_session_cookie):
     """DELETE /board/{board_id} - 게시글 삭제 성공"""
     # Given: 테스트용 게시글 1개 생성
     board_repository = BoardRepositoryImpl(db_session)
@@ -243,7 +243,7 @@ def test_delete_board_endpoint(client, db_session, test_user):
     # When: DELETE /board/{board_id} 요청 (작성자로)
     response = client.delete(
         f"/board/{board_id}",
-        headers={"X-User-Id": str(test_user.id)}
+        cookies=create_session_cookie(test_user.id)
     )
 
     # Then: 게시글이 성공적으로 삭제됨
@@ -254,7 +254,7 @@ def test_delete_board_endpoint(client, db_session, test_user):
     assert deleted_board is None
 
 
-def test_delete_board_endpoint_forbidden(client, db_session, test_user):
+def test_delete_board_endpoint_forbidden(client, db_session, test_user, create_session_cookie):
     """DELETE /board/{board_id} - 작성자 아닌 경우 403 에러"""
     # Given: 다른 사용자가 작성한 게시글
     board_repository = BoardRepositoryImpl(db_session)
@@ -266,7 +266,7 @@ def test_delete_board_endpoint_forbidden(client, db_session, test_user):
     # When: DELETE /board/{board_id} 요청 (다른 사용자로)
     response = client.delete(
         f"/board/{board_id}",
-        headers={"X-User-Id": str(test_user.id)}
+        cookies=create_session_cookie(test_user.id)
     )
 
     # Then: 403 Forbidden 에러 반환
