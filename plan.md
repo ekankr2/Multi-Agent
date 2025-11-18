@@ -136,8 +136,8 @@
 #### 4.1 User Domain Integration
 **[백로그 AIS-25] User Domain Integration Tests**
 
-- [ ] test_user_full_workflow: 사용자 등록 → 조회 → 프로필 수정 전체 플로우
-- [ ] test_google_oauth_to_user_creation_flow: Google OAuth 콜백 → User 생성 → 세션 생성 플로우
+- [x] test_user_full_workflow: 사용자 등록 → 조회 → 프로필 수정 전체 플로우
+- [x] test_google_oauth_to_user_creation_flow: Google OAuth 콜백 → User 생성 → 세션 생성 플로우
 
 #### 4.2 Board Domain Integration
 **[백로그 AIS-26] Board Domain Integration Tests**
