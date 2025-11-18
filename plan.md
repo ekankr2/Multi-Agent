@@ -142,8 +142,8 @@
 #### 4.2 Board Domain Integration
 **[백로그 AIS-26] Board Domain Integration Tests**
 
-- [ ] test_board_full_workflow_single_user: 게시글 작성 → 조회 → 수정 → 삭제 전체 플로우
-- [ ] test_board_authorization_workflow: 사용자 A가 작성, 사용자 B가 수정/삭제 시도 시 403 에러
+- [x] test_board_full_workflow_single_user: 게시글 작성 → 조회 → 수정 → 삭제 전체 플로우
+- [x] test_board_authorization_workflow: 사용자 A가 작성, 사용자 B가 수정/삭제 시도 시 403 에러
 
 #### 4.3 End-to-End Scenarios
 **[백로그 AIS-27] E2E Scenarios**
