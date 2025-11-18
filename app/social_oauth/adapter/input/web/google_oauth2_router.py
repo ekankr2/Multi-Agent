@@ -57,9 +57,9 @@ async def process_google_redirect(
     session_id = str(uuid.uuid4())
     print("[DEBUG] Generated session_id:", session_id)
 
-    # Redis에 session 저장 (1시간 TTL)
-    redis_client.set(session_id, access_token.access_token, ex=3600)
-    print("[DEBUG] Session saved in Redis:", redis_client.exists(session_id))
+    # Redis에 session 저장 (user_id 매핑, 1시간 TTL)
+    redis_client.set(session_id, str(user.id), ex=3600)
+    print("[DEBUG] Session saved in Redis (user_id):", user.id)
 
     # 브라우저 쿠키 발급
     redirect_response = RedirectResponse("http://localhost:3000")
