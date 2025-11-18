@@ -39,8 +39,8 @@
 #### 1.5 User Domain Integration with OAuth
 
 **Google OAuth 콜백 처리**
-- [ ] test_google_oauth_callback_creates_user: Google OAuth 콜백 시 User 자동 생성 AIS-19
-- [ ] test_google_oauth_callback_updates_last_login: 기존 User의 경우 last_login_at 갱신 AIS-20
+- [ ] test_google_oauth_callback_creates_user: Google OAuth 콜백 시 User 자동 생성 AIS-17
+- [ ] test_google_oauth_callback_updates_last_login: 기존 User의 경우 last_login_at 갱신 AIS-17
 
 ---
 
@@ -52,7 +52,7 @@
 > - 각 백로그 안에 Domain + Use Case + Repository + Adapter가 모두 포함
 
 #### 2.1 게시글 생성 기능
-**[백로그 AIS-21] Board 생성 기능 전체 구현 (Domain → Use Case → Repository → API)**
+**[백로그 AIS-18] Board 생성 기능 전체 구현 (Domain → Use Case → Repository → API)**
 
 - [ ] test_board_creation_with_user_id: Board 엔티티 생성 시 user_id 포함
 - [ ] test_board_has_title_and_content: Board는 title(최대 255자), content(최대 2000자) 포함
@@ -67,7 +67,7 @@
 - [ ] test_create_board_endpoint_validation_error: POST /board - 유효성 검증 실패 시 422 에러
 
 #### 2.2 게시글 목록 조회 기능
-**[백로그 AIS-22] Board 목록 조회 기능 전체 구현**
+**[백로그 AIS-19] Board 목록 조회 기능 전체 구현**
 
 - [ ] test_board_repository_find_all: 전체 Board 목록 조회 (최신순 정렬)
 - [ ] test_get_board_list_authenticated: 인증된 사용자가 게시글 목록 조회
@@ -77,7 +77,7 @@
 - [ ] test_get_board_list_endpoint_unauthenticated: GET /board - 인증 안 된 요청 시 401 에러
 
 #### 2.3 게시글 상세 조회 기능
-**[백로그 AIS-23] Board 상세 조회 기능 전체 구현**
+**[백로그 AIS-20] Board 상세 조회 기능 전체 구현**
 
 - [ ] test_board_repository_find_by_id: id로 Board 조회
 - [ ] test_board_repository_find_by_id_not_found: 존재하지 않는 Board 조회 시 None 반환
@@ -88,7 +88,7 @@
 - [ ] test_get_board_detail_endpoint_not_found: GET /board/{board_id} - 없는 게시글 조회 시 404 에러
 
 #### 2.4 게시글 수정 기능
-**[백로그 AIS-24] Board 수정 기능 전체 구현 (권한 검증 포함)**
+**[백로그 AIS-21] Board 수정 기능 전체 구현 (권한 검증 포함)**
 
 - [ ] test_board_update_title_and_content: Board 수정 시 updated_at 갱신
 - [ ] test_board_repository_update: Board 업데이트
@@ -98,7 +98,7 @@
 - [ ] test_update_board_endpoint_forbidden: PATCH /board/{board_id} - 작성자 아닌 경우 403 에러
 
 #### 2.5 게시글 삭제 기능
-**[백로그 AIS-25] Board 삭제 기능 전체 구현 (권한 검증 포함)**
+**[백로그 AIS-22] Board 삭제 기능 전체 구현 (권한 검증 포함)**
 
 - [ ] test_board_repository_delete: Board 삭제
 - [ ] test_delete_board_by_author: 작성자가 본인 게시글 삭제 성공
@@ -113,7 +113,7 @@
 > **백로그 정책**: Phase 3도 기능 단위로 백로그 통합
 
 #### 3.1 Session Validation Middleware
-**[백로그 AIS-26] Session Validation Middleware 구현**
+**[백로그 AIS-23] Session Validation Middleware 구현**
 
 - [ ] test_session_middleware_valid_session: 유효한 세션으로 요청 시 user_id 컨텍스트에 주입
 - [ ] test_session_middleware_invalid_session: 유효하지 않은 세션 토큰 시 401 에러
@@ -121,7 +121,7 @@
 - [ ] test_session_middleware_expired_session: 만료된 세션 시 401 에러
 
 #### 3.2 Get Current User Dependency
-**[백로그 AIS-27] Get Current User Dependency 구현**
+**[백로그 AIS-24] Get Current User Dependency 구현**
 
 - [ ] test_get_current_user_from_session: 세션에서 현재 사용자 조회
 - [ ] test_get_current_user_session_user_not_found: 세션은 있지만 User가 DB에 없는 경우 예외 발생
@@ -133,19 +133,19 @@
 > **백로그 정책**: Phase 4도 기능 단위로 백로그 통합
 
 #### 4.1 User Domain Integration
-**[백로그 AIS-28] User Domain Integration Tests**
+**[백로그 AIS-25] User Domain Integration Tests**
 
 - [ ] test_user_full_workflow: 사용자 등록 → 조회 → 프로필 수정 전체 플로우
 - [ ] test_google_oauth_to_user_creation_flow: Google OAuth 콜백 → User 생성 → 세션 생성 플로우
 
 #### 4.2 Board Domain Integration
-**[백로그 AIS-29] Board Domain Integration Tests**
+**[백로그 AIS-26] Board Domain Integration Tests**
 
 - [ ] test_board_full_workflow_single_user: 게시글 작성 → 조회 → 수정 → 삭제 전체 플로우
 - [ ] test_board_authorization_workflow: 사용자 A가 작성, 사용자 B가 수정/삭제 시도 시 403 에러
 
 #### 4.3 End-to-End Scenarios
-**[백로그 AIS-30] E2E Scenarios**
+**[백로그 AIS-27] E2E Scenarios**
 
 - [ ] test_e2e_google_login_and_create_board: Google 로그인 → 게시글 작성 → 목록 조회
 - [ ] test_e2e_multiple_users_board_interaction: 여러 사용자가 게시글 작성 및 각자 게시글 수정/삭제
@@ -161,9 +161,9 @@
 
 ## 백로그 정책
 - **AIS 번호**: 개별 테스트 단위 트래킹 번호 (Git 커밋에 사용)
-- **Phase 1 (User Domain, AIS-2~20)**: 개별 백로그 유지 (이미 진행 중)
+- **Phase 1 (User Domain, AIS-2~17)**: 개별 백로그 유지 (이미 진행 중)
   - 각 AIS 번호 = 1개 Notion 백로그
-- **Phase 2~4 (Board/Session/Integration, AIS-21~67)**: **기능 단위(Vertical Slice)**로 백로그 통합
+- **Phase 2~4 (Board/Session/Integration, AIS-18~27)**: **기능 단위(Vertical Slice)**로 백로그 통합
   - ✅ 올바른 예: "Board 생성 기능" = Domain + Use Case + Repository + API 모두 포함
   - ❌ 잘못된 예: "Board Entity 전체", "Board Repository 전체" (레이어별 분리)
   - 기능별 CRUD 단위로 백로그 생성:
@@ -172,5 +172,5 @@
     - Board 상세 조회 (1개 백로그)
     - Board 수정 (1개 백로그)
     - Board 삭제 (1개 백로그)
-- **커밋 메시지**: 계속 AIS 번호 사용 (예: [AIS-21], [AIS-22])
+- **커밋 메시지**: 계속 AIS 번호 사용 (예: [AIS-18], [AIS-19])
 - **Notion 백로그**: Phase 2부터는 기능(CRUD)별로 그룹핑하여 생성
